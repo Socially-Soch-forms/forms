@@ -326,7 +326,7 @@ function templateRound1() {
         "Infoproducer, course or mentorship", "Agency, B2B or SaaS"]) }),
       q("niche", "single", "What is your main niche?", "Profile", { allowOther: true, options: opts([
         "Business, entrepreneurship or money", "Health, fitness or nutrition", "Beauty, fashion or lifestyle",
-        "Education or personal development", "Tech, AI or productivity", "Food, cooking or restaurant",
+        "Jewellery design or jewellery brand", "Education or personal development", "Tech, AI or productivity", "Food, cooking or restaurant",
         "Relationships, mindset or spirituality", "Travel, culture or entertainment"]) }),
       q("offer", "single", "What does your profile sell?", "Offer", { allowOther: true, options: opts([
         "A product", "A service or consulting", "A course, mentorship or community",
@@ -372,6 +372,119 @@ function templateRound1() {
       q("extraInfo", "textarea", "Anything else you want us to know about you?", "Notes", {
         required: false,
         placeholder: "Tell us anything about your business, your audience, your story, your offers, your team, or your goals that we should know. The more we know, the better the personalized system we build for you." })
+    ]
+  });
+}
+
+/* One-round form for a bespoke jewellery designer (built for Pallavi Kapoor).
+   Skips what we already know from the brief: who runs the profile, the niche,
+   and camera comfort. Covers the Round 1 basics, the jewellery designer
+   questions, and the inputs we need to plan Month 1 content. */
+function templateJewellery() {
+  const opts = arr => arr.map(x => typeof x === "string" ? { l: x, sub: "" } : { l: x[0], sub: x[1] });
+  const q = (key, type, label, section, extra) => Object.assign({
+    key: key, type: type, label: label, help: "", section: section, placeholder: "",
+    options: [], allowOther: false, required: true, showIf: null
+  }, extra || {});
+  return normalize({
+    id: "",
+    clientName: "",
+    tag: "V2",
+    greeting: "Hey {name}.",
+    closingTitle: "Thank you, {name}.",
+    closingText: "This gives us everything we need to build your first month of content. We will come back to you with the plan.",
+    contact: { name: true, email: true, phone: true, instagram: false, emailRequired: true, position: "end", title: "", help: "" },
+    questions: [
+      /* Where the page is today */
+      q("stage", "single", "How big is your audience right now?", "Where you are now", { options: opts([
+        "0 to 1,000", "1,000 to 10,000", "10,000 to 50,000", "50,000 to 200,000", "200,000 and above"]) }),
+      q("frequency", "single", "How often do you post per week right now?", "Where you are now", { options: opts([
+        "0 to 1 times a week", "2 to 3 times a week", "4 to 6 times a week", "Daily", "No fixed routine"]) }),
+      q("goal30", "single", "What do you want most from Instagram in the next 30 days?", "Where you are now", { allowOther: true, options: opts([
+        "More enquiries and bespoke orders", "To be seen as a design authority", "Reach people outside my circle",
+        "More followers who actually buy", "Collaborations and exhibition invites"]) }),
+      q("problem", "single", "What feels most wrong with the page today?", "Where you are now", { allowOther: true, options: opts([
+        ["It looks like a catalogue, not like me", "Mostly product photos"],
+        "Reach is flat, new people are not finding me",
+        "People like the posts but do not enquire",
+        "I do not know what to post beyond the jewellery",
+        "I cannot keep up with posting"]) }),
+      q("topPosts", "textarea", "Paste links to your 3 to 5 best posts from the last 3 months", "Where you are now", {
+        help: "Copy the link from each post. If you know why one did well, add a line next to it.",
+        placeholder: "instagram.com/p/... did well because..." }),
+      q("format", "multi", "Which formats do you want to own?", "Where you are now", { allowOther: true, options: opts([
+        "Reels", "Carousels", "Static photos", "Stories", "Lives", "Not sure yet, you decide"]) }),
+
+      /* The business */
+      q("businessType", "single", "What best describes your jewellery business?", "Your jewellery business", { allowOther: true, options: opts([
+        ["Bespoke and custom designer", "Every piece made for a client"],
+        ["Fine jewellery brand", "Collections people buy ready"],
+        ["Redesign and repurposing specialist", "New life for old or inherited jewellery"],
+        ["Jewellery consultant", "Guiding clients on what to buy or make"],
+        "A mix of bespoke and ready pieces"]) }),
+      q("specialty", "multi", "What do you design most?", "Your jewellery business", { allowOther: true, options: opts([
+        "Bridal jewellery", "Heirloom redesigns", "Statement and editorial pieces",
+        "Raw and uncut diamond pieces", "Everyday fine jewellery", "Men's jewellery"]) }),
+      q("rawStones", "single", "How often do you work with raw, uncut diamonds or rare stones?", "Your jewellery business", { options: opts([
+        "In most of my pieces", "Often", "Now and then", "Rarely"]) }),
+      q("priceRange", "single", "What is the usual price of one piece?", "Your jewellery business", {
+        help: "Only used to reach the right buyers. Never shown on your page.",
+        allowOther: true, options: opts([
+          "Under ₹50,000", "₹50,000 to ₹2 lakh", "₹2 lakh to ₹5 lakh", "₹5 lakh to ₹15 lakh", "Above ₹15 lakh"]) }),
+      q("pieceTime", "single", "How long does one bespoke piece take, from first talk to delivery?", "Your jewellery business", { options: opts([
+        "Under 2 weeks", "2 to 4 weeks", "1 to 2 months", "More than 2 months"]) }),
+      q("clientSources", "multi", "Where do most of your clients come from today?", "Your jewellery business", { allowOther: true, options: opts([
+        "Referrals and word of mouth", "Instagram messages", "Exhibitions and pop ups",
+        "My studio or store", "Family and social circle", "Wedding planners or stylists"]) }),
+
+      /* The client */
+      q("idealClient", "multi", "Who is your dream client?", "Your clients", { allowOther: true, options: opts([
+        "Brides and their families", "Women buying for themselves",
+        "People with old jewellery they want redesigned", "Collectors of rare stones",
+        "NRI clients", "Men buying for someone special"]) }),
+      q("clientPlaces", "text", "Which cities or countries do most of your clients live in?", "Your clients", {
+        placeholder: "e.g. Delhi, Mumbai, Dubai, London" }),
+      q("clientSharing", "single", "Are your clients happy for their piece or story to be shared?", "Your clients", {
+        help: "Client stories are one of the strongest things we can post, so this matters.",
+        options: opts([
+          "Most are happy to be featured", "The piece yes, but not their face or name",
+          "Only case by case, with permission", "Mostly private, we cannot share"]) }),
+
+      /* Pallavi and her design thinking */
+      q("differentiation", "multi", "What makes your work different?", "Your design thinking", {
+        help: "Pick up to two.", allowOther: true, options: opts([
+          "I design around the natural character of each stone",
+          "I turn old or inherited jewellery into something new",
+          "Every piece is one of one, never repeated",
+          "My eye and personal taste",
+          "Craftsmanship and the karigars I work with"]) }),
+      q("unscripted", "single", "How easy is it for you to explain a design decision on camera, without a script?", "Your design thinking", { options: opts([
+        "Very easy, I can talk about it for hours", "Easy with a few pointers",
+        "Better with a script", "I prefer my voice over the process, not my face"]) }),
+      q("filmable", "multi", "Which parts of your process can we film?", "Your design thinking", { allowOther: true, options: opts([
+        "Sketching", "Choosing stones", "The karigar workshop", "Client meetings",
+        "Fittings and reveals", "Exhibitions"]) }),
+      q("hesitation", "single", "What makes you hold back from posting more personal or process content?", "Your design thinking", { allowOther: true, options: opts([
+        "People copying my designs", "Looking too salesy", "Time",
+        "Not knowing what to say", "Showing my face more often", "Nothing, I am ready"]) }),
+      q("designStory", "textarea", "Tell us one design story from the last month", "Your design thinking", {
+        help: "A client piece, a stone you reworked, a design choice you made. Tell it like you would tell a friend. We will turn it into your first 3 to 5 posts. If it is easier, send it to us as a voice note on WhatsApp and write 'voice note' here.",
+        placeholder: "The story..." }),
+
+      /* Direction */
+      q("competitor", "text", "Which designer or jewellery brand do you watch, admire or see as competition?", "Direction", {
+        placeholder: "Name and Instagram handle" }),
+      q("success", "textarea", "What would success look like for your brand by the end of 2026?", "Direction", {
+        placeholder: "In your own words" }),
+      q("adsRun", "single", "Have you ever run ads for your page?", "Marketing history", { options: opts(["Yes", "No"]) }),
+      q("adsTypes", "multi", "Which ads have you tried?", "Marketing history", {
+        help: "Pick everything that applies.", allowOther: true,
+        showIf: { key: "adsRun", equals: ["Yes"], inline: true },
+        options: opts([
+          "Instagram Boost (the in-app boost on a post or reel)",
+          "Meta Ads Manager (Facebook plus Instagram together)",
+          "Google Ads", "Influencer or creator paid partnerships", "Not sure which one"]) }),
+      q("extraInfo", "textarea", "Anything else you want us to know?", "Notes", { required: false, placeholder: "Optional" })
     ]
   });
 }
@@ -611,13 +724,17 @@ function openTemplatePicker() {
   const m = openModal(
     '<h2>New form</h2><p class="muted">Start blank, or from the starter set and edit from there.</p>' +
     '<button class="tpl" data-tpl="round1"><b>Round 1 onboarding</b><span>Your full Round 1 form, all 15 questions with the same options, details at the start and HOT, WARM, COLD lead scoring. Change any option or add questions.</span></button>' +
+    '<button class="tpl" data-tpl="jewellery"><b>Jewellery designer, one round</b><span>Everything we need for a jewellery designer\'s strategy in one go: page basics, the business, the client, design thinking and a first story. Built for Pallavi Kapoor.</span></button>' +
     '<button class="tpl" data-tpl="blank"><b>Blank form</b><span>An empty form. Add your own questions.</span></button>' +
     '<button class="tpl" data-tpl="starter"><b>Round 2 starter</b><span>Six questions we reuse often, including the ads question whose follow-up appears only on Yes. Edit or delete any of them.</span></button>' +
     '<div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" data-close>Cancel</button></div>'
   );
   m.querySelectorAll("[data-tpl]").forEach(b => b.addEventListener("click", () => {
     const t = b.dataset.tpl;
-    DRAFT = t === "starter" ? templateStarter() : t === "round1" ? templateRound1() : templateBlank();
+    DRAFT = t === "starter" ? templateStarter()
+          : t === "round1" ? templateRound1()
+          : t === "jewellery" ? templateJewellery()
+          : templateBlank();
     IS_NEW = true; ID_TOUCHED = t === "round1";
     if (t === "round1" && FORMS.some(f => f.id === "round1")) DRAFT.id = uniqueId("round1");
     OPEN.clear();

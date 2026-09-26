@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Form Portal · Socially Soch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#2F1A0E; --bg-card:#3F2418; --bg-card-2:#4A2C1E; --bg-deep:#26150B;
+  --border:rgba(187,148,87,0.26); --border-strong:rgba(187,148,87,0.55);
+  --tan:#BB9457; --text:#F5E5C4; --text-soft:rgba(245,229,196,0.72); --text-mute:rgba(245,229,196,0.45);
+  --burgundy:#6F1D1B; --burgundy-2:#8A2826; --danger:#f0a09c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:rgba(47,26,14,0.95);border-bottom:1px solid var(--border)}
+.brand{font-weight:600;letter-spacing:.04em}
+.brand span{color:var(--tan);font-weight:500;margin-left:8px}
+main{max-width:900px;margin:0 auto;padding:28px 24px 130px}
+h1{font-size:24px;font-weight:600;line-height:1.25}
+h2{font-size:15px;font-weight:600;margin-bottom:14px}
+.muted{color:var(--text-soft)}
+.small{font-size:12px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:22px}
+.bar{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.crumb{font-size:12px;color:var(--text-mute);margin-bottom:6px}
+.crumb a{color:var(--tan);text-decoration:none;cursor:pointer}
+.btn{border:1px solid transparent;border-radius:8px;padding:9px 16px;font:inherit;font-weight:500;cursor:pointer;color:var(--text);background:transparent;transition:all .15s}
+.btn.primary{background:var(--burgundy)}
+.btn.primary:hover{background:var(--burgundy-2)}
+.btn.ghost{border-color:var(--border)}
+.btn.ghost:hover{border-color:var(--tan)}
+.btn.small{padding:6px 12px;font-size:12px}
+.btn.danger{color:var(--danger)}
+.btn.danger:hover{border-color:var(--danger)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.inp{width:100%;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font:inherit}
+.inp:focus{outline:none;border-color:var(--tan)}
+.inp[readonly]{opacity:.65}
+.inp::placeholder{color:var(--text-mute)}
+textarea.inp{resize:vertical;line-height:1.5}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.fld{display:block;margin-bottom:14px}
+.fld>span{display:block;font-size:12px;color:var(--text-soft);margin-bottom:6px;font-weight:500}
+.fld i{font-style:normal;color:var(--text-mute);font-weight:400}
+.fld em{display:block;font-style:normal;font-size:11.5px;color:var(--text-mute);margin-top:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.checks{display:flex;gap:18px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--border);margin-top:4px;padding-top:14px}
+.checks .lbl{font-size:12px;color:var(--text-soft);font-weight:500;width:100%}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px;margin:6px 0 10px;cursor:pointer}
+.checks .chk{margin:0}
+input[type=checkbox]{accent-color:var(--tan);width:15px;height:15px}
+.list{display:grid;gap:14px}
+.fcard{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.fhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.fname{font-size:17px;font-weight:600}
+.fid{font-size:12px;color:var(--text-mute);margin-top:2px}
+.chips{display:flex;gap:6px;flex-shrink:0}
+.chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;letter-spacing:.04em}
+.chip.tag{background:var(--tan);color:#2F1A0E}
+.chip.live{background:rgba(120,170,110,.18);color:#bfe0b0}
+.chip.closed{background:rgba(245,229,196,.1);color:var(--text-mute)}
+.fmeta{font-size:12px;color:var(--text-soft);margin:10px 0 4px}
+.flink{font-size:12px;color:var(--tan);word-break:break-all;margin-bottom:14px}
+.factions{display:flex;gap:8px;flex-wrap:wrap}
+.empty{text-align:center;padding:50px 20px;color:var(--text-soft);border:1px dashed var(--border);border-radius:12px}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin:8px 0 12px;gap:10px;flex-wrap:wrap}
+.qhead h2{margin:0}
+.count{background:var(--bg-card-2);border-radius:999px;padding:2px 9px;font-size:12px;margin-left:6px;color:var(--text-soft);font-weight:500}
+.qcard{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px}
+.qcard.open{border-color:var(--border-strong)}
+.qtop{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer}
+.qnum{font-size:12px;font-weight:600;color:var(--tan);min-width:28px}
+.qtitle{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qtitle.empty-t{color:var(--text-mute);font-weight:400}
+.qtype{font-size:11.5px;color:var(--text-mute);white-space:nowrap}
+.qbtns{display:flex;gap:4px}
+.ib{background:transparent;border:1px solid var(--border);color:var(--text-soft);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:13px;line-height:1}
+.ib:hover{border-color:var(--tan);color:var(--text)}
+.ib:disabled{opacity:.3;cursor:default}
+.ib.danger:hover{border-color:var(--danger);color:var(--danger)}
+.qbody{padding:14px 16px 16px;border-top:1px solid var(--border)}
+.cond{margin-top:8px;padding:14px;border:1px dashed var(--border);border-radius:8px}
+.cond .fld:last-child{margin-bottom:0}
+.condopts{display:flex;flex-wrap:wrap;gap:0 18px}
+.addrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;padding:16px;border:1px dashed var(--border);border-radius:10px}
+.addrow span{color:var(--text-soft);font-size:13px;margin-right:4px}
+.savebar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 28px;background:rgba(38,21,11,.97);border-top:1px solid var(--border);z-index:15}
+.login{max-width:380px;margin:12vh auto 0}
+.login h1{margin-bottom:6px}
+.login .inp{margin:18px 0 8px}
+.err{color:var(--danger);font-size:12.5px;min-height:18px;margin-bottom:10px}
+#toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(20px);background:#F5E5C4;color:#2F1A0E;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;pointer-events:none;transition:all .25s;z-index:60;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,5,2,.62);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:12px;padding:24px;max-width:520px;width:100%}
+.modal h2{font-size:18px;margin-bottom:8px}
+.tpl{display:block;width:100%;text-align:left;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:10px;cursor:pointer;color:var(--text);font:inherit}
+.tpl:hover{border-color:var(--tan)}
+.tpl b{display:block;margin-bottom:4px}
+.tpl span{font-size:12.5px;color:var(--text-soft)}
+@media(max-width:680px){
+  .grid2{grid-template-columns:1fr}
+  .qtype{display:none}
+  .top,.savebar{padding:12px 16px}
+  main{padding:22px 16px 130px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Socially Soch <span>Form Portal</span></div>
+  <div id="topRight"></div>
+</header>
+<main id="app"></main>
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   Socially Soch form portal.
+   Build forms here. Each saved form gets a link like
+     form.html?id=<form-id>
+   Questions are stored in the "Forms" tab of the Google Sheet.
+   The passcode is checked by the Apps Script, not in this page.
+   ========================================================= */
+const CONFIG = {
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbz2Hdiw6UIsTOvcwNov5lOqa8V0M3eHKZs1LD9d4ryj2pcsoBry2V6v2qPWlsWPTJ9c5Q/exec",
+  formPageUrl: new URL("form.html", location.href).href.split("?")[0].split("#")[0]
+};
+
+const OTHER = "__other__";
+const TYPE_NAMES = { single: "Single choice", multi: "Multiple choice", text: "Short text", textarea: "Long text" };
+const app = document.getElementById("app");
+const topRight = document.getElementById("topRight");
+
+let PASS = "";
+try { PASS = sessionStorage.getItem("ss_portal_pass") || ""; } catch (e) {}
+let VIEW = "login";
+let FORMS = [];
+let DRAFT = null;
+let IS_NEW = true;
+let ID_TOUCHED = false;
+let DIRTY = false;
+const OPEN = new Set();
+
+/* ---------------- helpers ---------------- */
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function truncate(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+function slugify(s) {
+  return String(s || "").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
+}
+function linkFor(id) { return CONFIG.formPageUrl + "?id=" + encodeURIComponent(id); }
+function isChoice(q) { return q.type === "single" || q.type === "multi"; }
+function qByKey(k) { return DRAFT ? DRAFT.questions.find(q => q.key === k) : null; }
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2800);
+}
+function copyText(t) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(() => toast("Link copied"), () => window.prompt("Copy this link", t));
+  } else {
+    window.prompt("Copy this link", t);
+  }
+}
+function openModal(html) {
+  const bg = document.createElement("div");
+  bg.className = "modal-bg";
+  bg.innerHTML = '<div class="modal">' + html + '</div>';
+  bg.addEventListener("click", e => {
+    if (e.target === bg || e.target.closest("[data-close]")) bg.remove();
+  });
+  document.body.appendChild(bg);
+  return bg;
+}
+function genKey() {
+  let k;
+  do { k = "q" + Math.random().toString(36).slice(2, 7); }
+  while (DRAFT && DRAFT.questions.some(q => q.key === k));
+  return k;
+}
+function uniqueId(base) {
+  const id = slugify(base) || "form";
+  if (!FORMS.some(f => f.id === id)) return id;
+  let n = 2;
+  while (FORMS.some(f => f.id === id + "-" + n)) n++;
+  return id + "-" + n;
+}
+function optionsToText(opts) { return (opts || []).map(o => o.sub ? o.l + " | " + o.sub : o.l).join("\n"); }
+function textToOptions(t) {
+  return String(t || "").split("\n").map(line => {
+    const i = line.indexOf("|");
+    const l = (i === -1 ? line : line.slice(0, i)).trim();
+    const sub = i === -1 ? "" : line.slice(i + 1).trim();
+    return { l: l, sub: sub };
+  }).filter(o => o.l);
+}
+
+async function api(action, extra) {
+  const body = JSON.stringify(Object.assign({ action: action, key: PASS }, extra || {}));
+  const res = await fetch(CONFIG.appsScriptUrl, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: body
+  });
+  return await res.json();
+}
+function handleApiError(r, fallback) {
+  if (r && r.error === "wrong_passcode") { lockOut("Passcode changed or expired. Enter it again."); return; }
+  if (r && r.error === "set_passcode") { toast("Set your own passcode in the Apps Script first."); return; }
+  toast(fallback);
+}
+
+window.addEventListener("beforeunload", e => {
+  if (VIEW === "editor" && DIRTY) { e.preventDefault(); e.returnValue = ""; }
+});
+
+/* ---------------- data shape ---------------- */
+function normalize(f) {
+  f = JSON.parse(JSON.stringify(f || {}));
+  return {
+    id: f.id || "",
+    clientName: f.clientName || "",
+    tag: f.tag || "V2",
+    greeting: f.greeting == null ? "Hey {name}." : f.greeting,
+    closingTitle: f.closingTitle == null ? "Thanks {name}." : f.closingTitle,
+    closingText: f.closingText == null ? "We will get back to you within 48 hours." : f.closingText,
+    contact: Object.assign(
+      { name: true, phone: true, email: true, emailRequired: true, instagram: false, position: "end", title: "", help: "" },
+      f.contact || {}
+    ),
+    questions: (f.questions || []).map(q => ({
+      key: q.key || ("q" + Math.random().toString(36).slice(2, 7)),
+      type: TYPE_NAMES[q.type] ? q.type : "single",
+      label: q.label || "",
+      help: q.help || "",
+      section: q.section || "",
+      placeholder: q.placeholder || "",
+      options: Array.isArray(q.options) ? q.options.map(o => typeof o === "string" ? { l: o, sub: "" } : { l: o.l || "", sub: o.sub || "" }) : [],
+      allowOther: !!q.allowOther,
+      required: q.required !== false,
+      showIf: q.showIf && q.showIf.key ? { key: q.showIf.key, equals: (q.showIf.equals || []).slice(), inline: !!q.showIf.inline } : null
+    }))
+  };
+}
+
+function newQuestion(type) {
+  const choice = type === "single" || type === "multi";
+  return {
+    key: genKey(), type: type, label: "", help: "", section: "", placeholder: "",
+    options: choice ? [{ l: "Option one", sub: "" }, { l: "Option two", sub: "" }] : [],
+    allowOther: choice, required: true, showIf: null
+  };
+}
+
+function cleanForm() {
+  const d = DRAFT;
+  return {
+    id: d.id,
+    clientName: d.clientName.trim(),
+    tag: (d.tag || "FORM").trim().toUpperCase() || "FORM",
+    greeting: d.greeting,
+    closingTitle: d.closingTitle,
+    closingText: d.closingText,
+    contact: {
+      name: !!d.contact.name, phone: !!d.contact.phone, email: !!d.contact.email,
+      instagram: !!d.contact.instagram, emailRequired: !!d.contact.emailRequired,
+      position: d.contact.position === "start" ? "start" : "end",
+      title: (d.contact.title || "").trim(), help: (d.contact.help || "").trim()
+    },
+    questions: d.questions.map(q => {
+      const o = { key: q.key, type: q.type, label: q.label.trim() };
+      if (q.help.trim()) o.help = q.help.trim();
+      if (q.section.trim()) o.section = q.section.trim();
+      if (q.required === false) o.required = false;
+      if (isChoice(q)) {
+        o.options = q.options.map(x => x.sub ? { l: x.l, sub: x.sub } : { l: x.l });
+        if (q.allowOther) o.allowOther = true;
+      } else if (q.placeholder.trim()) {
+        o.placeholder = q.placeholder.trim();
+      }
+      if (q.showIf && q.showIf.key) o.showIf = { key: q.showIf.key, equals: q.showIf.equals.slice(), inline: !!q.showIf.inline };
+      return o;
+    })
+  };
+}
+
+/* ---------------- templates ---------------- */
+/* Round 1 keeps the same question keys as the original index.html,
+   so the Apps Script still scores HOT, WARM and COLD leads and fills
+   Lead Summary and Hot Leads. */
+function templateRound1() {
+  const opts = arr => arr.map(x => ({ l: x, sub: "" }));
+  const q = (key, type, label, section, extra) => Object.assign({
+    key: key, type: type, label: label, help: "", section: section, placeholder: "",
+    options: [], allowOther: false, required: true, showIf: null
+  }, extra || {});
+  return normalize({
+    id: "round1",
+    clientName: "",
+    tag: "V1",
+    greeting: "",
+    closingTitle: "Thank you.",
+    closingText: "We will do our best to help you promote your brand and build a personalized system for you.",
+    contact: {
+      name: true, instagram: true, email: true, phone: false, emailRequired: true,
+      position: "start", title: "Tell us about your brand.", help: ""
+    },
+    questions: [
+      q("profileType", "single", "Who is behind this profile?", "Profile", { allowOther: true, options: opts([
+        "Personal brand or creator or coach", "Local business", "Online business or ecommerce",
+        "Infoproducer, course or mentorship", "Agency, B2B or SaaS"]) }),
+      q("niche", "single", "What is your main niche?", "Profile", { allowOther: true, options: opts([
+        "Business, entrepreneurship or money", "Health, fitness or nutrition", "Beauty, fashion or lifestyle",
+        "Education or personal development", "Tech, AI or productivity", "Food, cooking or restaurant",
+        "Relationships, mindset or spirituality", "Travel, culture or entertainment"]) }),
+      q("offer", "single", "What does your profile sell?", "Offer", { allowOther: true, options: opts([
+        "A product", "A service or consulting", "A course, mentorship or community",
+        "Personal brand, no offer yet", "Sponsorships or partnerships", "Multiple offers"]) }),
+      q("stage", "single", "How big is your audience right now?", "Audience", { options: opts([
+        "0 to 1,000", "1,000 to 10,000", "10,000 to 50,000", "50,000 to 200,000", "200,000 and above"]) }),
+      q("goal30", "single", "What is your main goal for the next 30 days?", "Goals", { allowOther: true, options: opts([
+        "More followers", "More sales or clients", "Build authority in my niche", "More leads or DMs",
+        "Brand deals or paid partnerships", "More views"]) }),
+      q("problem", "single", "What is the biggest problem you are facing right now?", "Goals", { allowOther: true, options: opts([
+        "Reach is flat, Instagram is not pushing me", "Reach is fine but no engagement",
+        "Engagement is fine but no sales or leads", "Positioning is generic, I sound like everyone",
+        "I cannot keep up with posting consistently", "Branding is poor"]) }),
+      q("frequency", "single", "How often do you post per week?", "Content Operations", { options: opts([
+        "0 to 1 times a week", "2 to 3 times a week", "4 to 6 times a week",
+        "Daily, 7 or more times a week", "Irregular posting"]) }),
+      q("format", "multi", "Which format works best for you, or which one do you want to dominate?", "Content Operations", { allowOther: true, options: opts([
+        "Reels or short video", "Carousels", "Static photos", "Stories", "Lives", "Long form content", "I do not know yet"]) }),
+      q("onCamera", "single", "Are you comfortable on camera?", "Content Operations", { options: opts([
+        "Yes, always", "Sometimes, depends on the content", "No, but I am willing to learn", "No, I want a faceless strategy"]) }),
+      q("targetFollower", "multi", "Who is our target follower?", "Audience", { allowOther: true, options: opts([
+        "Entrepreneurs or business owners", "Women 25 to 40", "Men 25 to 40", "Parents", "Gen Z or students",
+        "Decision makers or B2B", "Fitness or wellness audience", "Local customers in my city"]) }),
+      q("competitor", "text", "Who do you think is your biggest competitor?", "Positioning", {
+        help: "Their name or brand, and their Instagram handle if you have it.",
+        placeholder: "e.g. Pooja Khurana, @poojakhurana" }),
+      q("differentiation", "single", "What makes you different from your competitors?", "Positioning", { allowOther: true, options: opts([
+        "A unique method or framework I created", "Real results or case studies I can prove",
+        "My personality, story or lifestyle", "Price, access or speed", "I do not know yet"]) }),
+      q("adsRun", "single", "Have you ever run any ads on your account?", "Marketing history", { options: opts(["Yes", "No"]) }),
+      q("adsTypes", "multi", "Which ads have you tried?", "Marketing history", {
+        help: "Pick everything that applies. We use this to plan your paid strategy.",
+        allowOther: true,
+        showIf: { key: "adsRun", equals: ["Yes"], inline: true },
+        options: opts([
+          "Instagram Boost (the in-app boost on a post or reel)",
+          "Meta Ads Manager (Facebook plus Instagram together)",
+          "Google Ads (Search, Display or YouTube)",
+          "WhatsApp or Click-to-WhatsApp ads",
+          "Influencer or creator paid partnerships",
+          "Other social platform ads (LinkedIn, X, Pinterest)",
+          "I have tried but I am not sure which platform"]) }),
+      q("extraInfo", "textarea", "Anything else you want us to know about you?", "Notes", {
+        required: false,
+        placeholder: "Tell us anything about your business, your audience, your story, your offers, your team, or your goals that we should know. The more we know, the better the personalized system we build for you." })
+    ]
+  });
+}
+
+function templateBlank() {
+  return normalize({ tag: "V2", questions: [] });
+}
+function templateStarter() {
+  const f = templateBlank();
+  DRAFT = f;
+  const ads = Object.assign(newQuestion("single"), {
+    label: "Have you ever run any ads on your account?",
+    section: "Marketing history",
+    options: [{ l: "Yes", sub: "" }, { l: "No", sub: "" }],
+    allowOther: false
+  });
+  f.questions.push(ads);
+  f.questions.push(Object.assign(newQuestion("multi"), {
+    label: "Which ads have you tried?",
+    help: "Pick everything that applies.",
+    section: "Marketing history",
+    options: [
+      { l: "Instagram Boost", sub: "The in-app boost on a post or reel" },
+      { l: "Meta Ads Manager", sub: "Facebook plus Instagram together" },
+      { l: "Google Ads", sub: "Search, Display or YouTube" },
+      { l: "WhatsApp or Click-to-WhatsApp ads", sub: "" },
+      { l: "Influencer or creator paid partnerships", sub: "" }
+    ],
+    allowOther: true,
+    showIf: { key: ads.key, equals: ["Yes"], inline: true }
+  }));
+  f.questions.push(Object.assign(newQuestion("single"), {
+    label: "How would you like to run the batch content shoots?",
+    help: "We shoot multiple pieces in one go so the page stays fed without you scrambling weekly.",
+    section: "Content production",
+    options: [{ l: "I will manage it myself", sub: "" }, { l: "I want your team to handle everything", sub: "" }]
+  }));
+  f.questions.push(Object.assign(newQuestion("single"), {
+    label: "If the current page does not respond well to organic, are you open to starting a fresh page?",
+    help: "We will give the current handle a real organic shot first. This is just so we know our options.",
+    section: "Page strategy",
+    options: [
+      { l: "Yes, open to a fresh page if the strategy needs it", sub: "" },
+      { l: "Maybe, only as a last resort", sub: "" },
+      { l: "No, I want to grow this handle no matter what", sub: "" }
+    ]
+  }));
+  f.questions.push(Object.assign(newQuestion("text"), {
+    label: "Who would be your dream collab partner?",
+    section: "Inspiration",
+    placeholder: "Type the name"
+  }));
+  f.questions.push(Object.assign(newQuestion("single"), {
+    label: "What is your ideal time to start with us?",
+    help: "We ask so we can plan your shoot dates, the page strategy and the lead funnel from day one.",
+    section: "Working with us",
+    options: [{ l: "Next week", sub: "" }, { l: "Within two weeks", sub: "" }, { l: "Within the month", sub: "" }]
+  }));
+  return f;
+}
+
+/* ---------------- login ---------------- */
+function showLogin(msg) {
+  VIEW = "login";
+  topRight.innerHTML = "";
+  app.innerHTML =
+    '<div class="login card">' +
+      '<h1>Form Portal</h1>' +
+      '<p class="muted">Enter the team passcode to create and manage forms.</p>' +
+      '<input id="pass" type="password" class="inp" placeholder="Passcode" autocomplete="current-password">' +
+      '<div class="err" id="loginErr">' + esc(msg || "") + '</div>' +
+      '<button class="btn primary" id="loginBtn">Enter</button>' +
+    '</div>';
+  const input = document.getElementById("pass");
+  const btn = document.getElementById("loginBtn");
+  const err = document.getElementById("loginErr");
+  input.focus();
+  const go = async () => {
+    const val = input.value.trim();
+    if (!val) { err.textContent = "Type the passcode first."; return; }
+    btn.disabled = true; btn.textContent = "Checking"; err.textContent = "";
+    PASS = val;
+    try {
+      const r = await api("ping");
+      if (r && r.ok) {
+        try { sessionStorage.setItem("ss_portal_pass", PASS); } catch (e) {}
+        showList();
+        return;
+      }
+      PASS = "";
+      err.textContent = r && r.error === "set_passcode"
+        ? "Set your own passcode in the Apps Script (PORTAL_PASSCODE) and redeploy first."
+        : "Wrong passcode.";
+    } catch (e) {
+      PASS = "";
+      err.textContent = "Could not reach the backend. Make sure the updated Apps Script is deployed as a new version.";
+    }
+    btn.disabled = false; btn.textContent = "Enter";
+  };
+  btn.addEventListener("click", go);
+  input.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+}
+
+function lockOut(msg) {
+  PASS = "";
+  try { sessionStorage.removeItem("ss_portal_pass"); } catch (e) {}
+  DIRTY = false;
+  showLogin(msg || "");
+}
+
+/* ---------------- list ---------------- */
+async function showList() {
+  VIEW = "list";
+  DIRTY = false;
+  topRight.innerHTML = '<button class="btn ghost small" id="lockBtn">Lock</button>';
+  document.getElementById("lockBtn").addEventListener("click", () => lockOut("Locked."));
+  app.innerHTML =
+    '<div class="bar"><div><h1>Your forms</h1><p class="muted small" style="margin-top:4px">Every form lands in the same Google Sheet.</p></div>' +
+    '<button class="btn primary" id="newBtn">New form</button></div>' +
+    '<div id="list" class="list"><div class="muted">Loading forms…</div></div>';
+  document.getElementById("newBtn").addEventListener("click", openTemplatePicker);
+  const listEl = document.getElementById("list");
+  listEl.addEventListener("click", onListClick);
+  try {
+    const r = await api("list");
+    if (!r || !r.ok) {
+      listEl.innerHTML = '<div class="err">Could not load forms. Refresh to try again.</div>';
+      return handleApiError(r, "Could not load forms.");
+    }
+    FORMS = r.forms || [];
+    renderList();
+  } catch (e) {
+    listEl.innerHTML = '<div class="err">Could not load forms. Refresh to try again.</div>';
+  }
+}
+
+function renderList() {
+  const listEl = document.getElementById("list");
+  if (!listEl) return;
+  if (!FORMS.length) {
+    listEl.innerHTML = '<div class="empty">No forms yet. Hit <b>New form</b> to build your first one.</div>';
+    return;
+  }
+  listEl.innerHTML = FORMS.slice().reverse().map(f => {
+    const link = f.link || linkFor(f.id);
+    const closed = f.status === "closed";
+    return '<div class="fcard">' +
+      '<div class="fhead"><div><div class="fname">' + esc(f.clientName || "General form") + '</div>' +
+      '<div class="fid">' + esc(f.id) + '</div></div>' +
+      '<div class="chips"><span class="chip tag">' + esc(f.tag || "FORM") + '</span>' +
+      '<span class="chip ' + (closed ? "closed" : "live") + '">' + (closed ? "Closed" : "Live") + '</span></div></div>' +
+      '<div class="fmeta">' + esc(f.questions) + ' questions · Updated ' + esc(f.updatedAt || "") + '</div>' +
+      '<div class="flink">' + esc(link) + '</div>' +
+      '<div class="factions">' +
+        '<button class="btn primary small" data-act="edit" data-id="' + esc(f.id) + '">Edit</button>' +
+        '<button class="btn ghost small" data-act="copy" data-id="' + esc(f.id) + '">Copy link</button>' +
+        '<button class="btn ghost small" data-act="open" data-id="' + esc(f.id) + '">Open</button>' +
+        '<button class="btn ghost small" data-act="dup" data-id="' + esc(f.id) + '">Duplicate</button>' +
+        '<button class="btn ghost small" data-act="status" data-id="' + esc(f.id) + '">' + (closed ? "Reopen" : "Close") + '</button>' +
+        '<button class="btn ghost small danger" data-act="delete" data-id="' + esc(f.id) + '">Delete</button>' +
+      '</div></div>';
+  }).join("");
+}
+
+async function onListClick(e) {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const act = btn.dataset.act;
+  const f = FORMS.find(x => x.id === id);
+  if (!f) return;
+  const link = f.link || linkFor(id);
+
+  if (act === "copy") return copyText(link);
+  if (act === "open") return window.open(link, "_blank", "noopener");
+
+  if (act === "edit" || act === "dup") {
+    btn.disabled = true;
+    try {
+      const r = await api("get", { id: id });
+      if (!r || !r.ok || !r.form) return handleApiError(r, "Could not open that form.");
+      DRAFT = normalize(r.form);
+      OPEN.clear();
+      if (act === "dup") {
+        DRAFT.id = uniqueId(DRAFT.id + "-copy");
+        IS_NEW = true; ID_TOUCHED = true;
+        showEditor();
+        DIRTY = true;
+        toast("Copy made. Change the client name and ID, then save.");
+      } else {
+        IS_NEW = false; ID_TOUCHED = true;
+        showEditor();
+      }
+    } catch (err) {
+      toast("Could not reach the backend.");
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  if (act === "status") {
+    const next = f.status === "closed" ? "live" : "closed";
+    btn.disabled = true;
+    try {
+      const r = await api("setStatus", { id: id, status: next });
+      if (!r || !r.ok) return handleApiError(r, "Could not update the form.");
+      f.status = next;
+      renderList();
+      toast(next === "closed" ? "Form closed. The link now shows a closed message." : "Form is live again.");
+    } catch (err) {
+      toast("Could not reach the backend.");
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  if (act === "delete") {
+    if (!confirm("Delete the form for " + (f.clientName || f.id) + "? The link stops working. Answers already in the sheet stay where they are.")) return;
+    btn.disabled = true;
+    try {
+      const r = await api("delete", { id: id });
+      if (!r || !r.ok) return handleApiError(r, "Could not delete the form.");
+      FORMS = FORMS.filter(x => x.id !== id);
+      renderList();
+      toast("Form deleted");
+    } catch (err) {
+      toast("Could not reach the backend.");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+}
+
+function openTemplatePicker() {
+  const m = openModal(
+    '<h2>New form</h2><p class="muted">Start blank, or from the starter set and edit from there.</p>' +
+    '<button class="tpl" data-tpl="round1"><b>Round 1 onboarding</b><span>Your full Round 1 form, all 15 questions with the same options, details at the start and HOT, WARM, COLD lead scoring. Change any option or add questions.</span></button>' +
+    '<button class="tpl" data-tpl="blank"><b>Blank form</b><span>An empty form. Add your own questions.</span></button>' +
+    '<button class="tpl" data-tpl="starter"><b>Round 2 starter</b><span>Six questions we reuse often, including the ads question whose follow-up appears only on Yes. Edit or delete any of them.</span></button>' +
+    '<div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" data-close>Cancel</button></div>'
+  );
+  m.querySelectorAll("[data-tpl]").forEach(b => b.addEventListener("click", () => {
+    const t = b.dataset.tpl;
+    DRAFT = t === "starter" ? templateStarter() : t === "round1" ? templateRound1() : templateBlank();
+    IS_NEW = true; ID_TOUCHED = t === "round1";
+    if (t === "round1" && FORMS.some(f => f.id === "round1")) DRAFT.id = uniqueId("round1");
+    OPEN.clear();
+    if (b.dataset.tpl === "blank") {
+      const q = newQuestion("single");
+      DRAFT.questions.push(q);
+      OPEN.add(q.key);
+    }
+    m.remove();
+    showEditor();
+    DIRTY = true;
+  }));
+}
+
+/* ---------------- editor ---------------- */
+function showEditor() {
+  VIEW = "editor";
+  topRight.innerHTML = "";
+  const d = DRAFT;
+  app.innerHTML =
+    '<div class="bar"><div>' +
+      '<div class="crumb"><a id="backLink">Your forms</a> / ' + (IS_NEW ? "New form" : "Edit form") + '</div>' +
+      '<h1 id="edTitle">' + esc(d.clientName || "Untitled form") + '</h1>' +
+      (IS_NEW ? '' : '<div class="flink" style="margin:6px 0 0">' + esc(linkFor(d.id)) + '</div>') +
+    '</div></div>' +
+
+    '<section class="card"><h2>Form settings</h2>' +
+      '<div class="grid2">' +
+        '<label class="fld"><span>Client name</span><input class="inp" data-set="clientName" value="' + esc(d.clientName) + '" placeholder="e.g. Dhaanya">' +
+          '<em>Shown in the greeting and used as the client name in the sheet. Leave blank for a general form anyone can fill.</em></label>' +
+        '<label class="fld"><span>Form ID</span><input class="inp" data-set="id" value="' + esc(d.id) + '"' + (IS_NEW ? '' : ' readonly') + ' placeholder="e.g. dhaanya-r2">' +
+          '<em>' + (IS_NEW ? "Becomes part of the link. Lowercase letters, numbers and dashes." : "Locked after saving because the live link depends on it.") + '</em></label>' +
+        '<label class="fld"><span>Tag in the sheet</span><input class="inp" data-set="tag" list="tagList" value="' + esc(d.tag) + '">' +
+          '<datalist id="tagList"><option value="V2"><option value="BRIEF"><option value="V1"><option value="FORM"></datalist>' +
+          '<em>The chip in the Form column. V2 shows tan, BRIEF sienna, anything else espresso.</em></label>' +
+        '<label class="fld"><span>Greeting on page 1 <i>optional</i></span><input class="inp" data-set="greeting" value="' + esc(d.greeting) + '">' +
+          '<em>{name} becomes the client name. Clear it for no greeting.</em></label>' +
+        '<label class="fld"><span>Thank you title</span><input class="inp" data-set="closingTitle" value="' + esc(d.closingTitle) + '"></label>' +
+        '<label class="fld"><span>Thank you message <i>optional</i></span><input class="inp" data-set="closingText" value="' + esc(d.closingText) + '"></label>' +
+      '</div>' +
+      '<div class="checks"><span class="lbl">Details step</span>' +
+        '<label class="chk"><input type="checkbox" data-contact="name"' + (d.contact.name ? " checked" : "") + '> Name</label>' +
+        '<label class="chk"><input type="checkbox" data-contact="instagram"' + (d.contact.instagram ? " checked" : "") + '> Instagram handle</label>' +
+        '<label class="chk"><input type="checkbox" data-contact="email"' + (d.contact.email ? " checked" : "") + '> Email</label>' +
+        '<label class="chk"><input type="checkbox" data-contact="phone"' + (d.contact.phone ? " checked" : "") + '> Phone</label>' +
+        '<label class="chk"><input type="checkbox" data-contact="emailRequired"' + (d.contact.emailRequired ? " checked" : "") + '> Email required</label>' +
+      '</div>' +
+      '<div class="grid2" style="margin-top:14px">' +
+        '<label class="fld"><span>Ask for details</span><select class="inp" data-contact="position">' +
+          '<option value="end"' + (d.contact.position !== "start" ? " selected" : "") + '>At the end, after the questions</option>' +
+          '<option value="start"' + (d.contact.position === "start" ? " selected" : "") + '>At the start, before the questions</option>' +
+        '</select></label>' +
+        '<label class="fld"><span>Details step title <i>optional</i></span><input class="inp" data-contact="title" value="' + esc(d.contact.title) + '" placeholder="Confirm your details"></label>' +
+      '</div>' +
+      '<p class="muted small" id="v1note"' + (d.tag === "V1" ? "" : ' style="display:none"') + '>Tag V1 turns on lead scoring. HOT, WARM and COLD are worked out from the questions about who is behind the profile, audience size, what they sell, the 30 day goal and what makes them different. Add questions and edit options freely. If you rename the audience size or goal options, the score for those answers stops counting.</p>' +
+    '</section>' +
+
+    '<div class="qhead"><h2>Questions <span class="count" id="qCount">' + d.questions.length + '</span></h2>' +
+      '<div class="row"><button class="btn ghost small" id="expandAll">Expand all</button><button class="btn ghost small" id="collapseAll">Collapse all</button></div></div>' +
+    '<div id="qlist"></div>' +
+    '<div class="addrow"><span>Add a question</span>' +
+      '<button class="btn ghost small" data-add="single">Single choice</button>' +
+      '<button class="btn ghost small" data-add="multi">Multiple choice</button>' +
+      '<button class="btn ghost small" data-add="text">Short text</button>' +
+      '<button class="btn ghost small" data-add="textarea">Long text</button>' +
+    '</div>' +
+
+    '<footer class="savebar"><button class="btn ghost" id="cancelBtn">Back to forms</button>' +
+      '<div class="row"><button class="btn ghost" id="previewBtn">Preview</button>' +
+      '<button class="btn primary" id="saveBtn">' + (IS_NEW ? "Save and get link" : "Save changes") + '</button></div></footer>';
+
+  rerenderQuestions();
+
+  app.querySelectorAll("[data-set]").forEach(el => el.addEventListener("input", onSetInput));
+  app.querySelectorAll("[data-contact]").forEach(el => {
+    const ev = el.type === "checkbox" || el.tagName === "SELECT" ? "change" : "input";
+    el.addEventListener(ev, () => {
+      DRAFT.contact[el.dataset.contact] = el.type === "checkbox" ? el.checked : el.value;
+      DIRTY = true;
+    });
+  });
+  const ql = document.getElementById("qlist");
+  ql.addEventListener("input", onQInput);
+  ql.addEventListener("change", onQChange);
+  ql.addEventListener("click", onQClick);
+  app.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => addQuestion(b.dataset.add)));
+  document.getElementById("expandAll").addEventListener("click", () => { DRAFT.questions.forEach(q => OPEN.add(q.key)); rerenderQuestions(); });
+  document.getElementById("collapseAll").addEventListener("click", () => { OPEN.clear(); rerenderQuestions(); });
+  document.getElementById("cancelBtn").addEventListener("click", leaveEditor);
+  document.getElementById("backLink").addEventListener("click", leaveEditor);
+  document.getElementById("previewBtn").addEventListener("click", preview);
+  document.getElementById("saveBtn").addEventListener("click", save);
+}
+
+function rerenderQuestions() {
+  const ql = document.getElementById("qlist");
+  if (!ql) return;
+  ql.innerHTML = DRAFT.questions.length
+    ? DRAFT.questions.map((q, i) => qCard(q, i)).join("")
+    : '<div class="empty">No questions yet. Add one below.</div>';
+  const c = document.getElementById("qCount");
+  if (c) c.textContent = DRAFT.questions.length;
+}
+
+function qCard(q, i) {
+  const open = OPEN.has(q.key);
+  const n = DRAFT.questions.length;
+  const cond = q.showIf && q.showIf.key;
+  let body = "";
+  if (open) {
+    const typeOpts = Object.keys(TYPE_NAMES).map(t =>
+      '<option value="' + t + '"' + (q.type === t ? " selected" : "") + '>' + TYPE_NAMES[t] + '</option>').join("");
+    body =
+      '<label class="fld"><span>Question</span><input class="inp" data-q="label" value="' + esc(q.label) + '" placeholder="Type the question"></label>' +
+      '<label class="fld"><span>Helper text <i>optional</i></span><textarea class="inp" rows="2" data-q="help" placeholder="A short line under the question">' + esc(q.help) + '</textarea></label>' +
+      '<div class="grid2">' +
+        '<label class="fld"><span>Answer type</span><select class="inp" data-q="type">' + typeOpts + '</select></label>' +
+        '<label class="fld"><span>Section in the sheet <i>optional</i></span><input class="inp" data-q="section" value="' + esc(q.section) + '" placeholder="e.g. Conversion"></label>' +
+      '</div>' +
+      (isChoice(q)
+        ? '<label class="fld"><span>Options, one per line</span><textarea class="inp mono" rows="' + Math.max(3, q.options.length + 1) + '" data-q="options">' + esc(optionsToText(q.options)) + '</textarea>' +
+            '<em>For a small grey note under an option, add it after a | like this: Bridal day | Lehenga, ceremony makeup</em></label>' +
+          '<label class="chk"><input type="checkbox" data-q="allowOther"' + (q.allowOther ? " checked" : "") + '> Add a "Something else" option with a text box</label>'
+        : '<label class="fld"><span>Placeholder <i>optional</i></span><input class="inp" data-q="placeholder" value="' + esc(q.placeholder) + '" placeholder="Grey hint inside the box"></label>') +
+      '<label class="chk"><input type="checkbox" data-q="required"' + (q.required !== false ? " checked" : "") + '> Required</label>' +
+      condBlock(q, i);
+  }
+  return '<div class="qcard' + (open ? " open" : "") + '" data-key="' + esc(q.key) + '" id="qc-' + esc(q.key) + '">' +
+    '<div class="qtop">' +
+      '<span class="qnum">Q' + (i + 1) + '</span>' +
+      '<span class="qtitle' + (q.label.trim() ? "" : " empty-t") + '">' + esc(q.label.trim() || "Untitled question") + '</span>' +
+      '<span class="qtype">' + TYPE_NAMES[q.type] + (cond ? " · conditional" : "") + '</span>' +
+      '<span class="qbtns">' +
+        '<button class="ib" data-move="-1" title="Move up"' + (i === 0 ? " disabled" : "") + '>&#8593;</button>' +
+        '<button class="ib" data-move="1" title="Move down"' + (i === n - 1 ? " disabled" : "") + '>&#8595;</button>' +
+        '<button class="ib" data-dup title="Duplicate">&#10697;</button>' +
+        '<button class="ib danger" data-del title="Delete">&#10005;</button>' +
+      '</span>' +
+    '</div>' +
+    (open ? '<div class="qbody">' + body + '</div>' : '') +
+  '</div>';
+}
+
+function condBlock(q, i) {
+  const triggers = DRAFT.questions.slice(0, i).filter(isChoice);
+  if (!triggers.length) {
+    return '<div class="cond muted small">To make this question appear only after a certain answer, put a choice question above it.</div>';
+  }
+  const s = q.showIf || {};
+  let h = '<div class="cond"><label class="fld"><span>Only show this question if</span><select class="inp" data-q="condKey">' +
+    '<option value="">Always show it</option>' +
+    triggers.map(t => '<option value="' + esc(t.key) + '"' + (s.key === t.key ? " selected" : "") + '>Q' +
+      (DRAFT.questions.indexOf(t) + 1) + '. ' + esc(truncate(t.label || "Untitled question", 60)) + '</option>').join("") +
+    '</select></label>';
+  if (s.key) {
+    const t = qByKey(s.key);
+    if (t) {
+      const choices = t.options.map(o => o.l).concat(t.allowOther ? [OTHER] : []);
+      h += '<div class="fld"><span>is answered with any of</span><div class="condopts">' +
+        choices.map(c => '<label class="chk"><input type="checkbox" data-cond="' + esc(c) + '"' +
+          (s.equals.indexOf(c) !== -1 ? " checked" : "") + '> ' + (c === OTHER ? "Something else" : esc(c)) + '</label>').join("") +
+        '</div><em>Leave all unticked to show it after any answer.</em></div>' +
+        '<label class="chk" style="margin-bottom:0"><input type="checkbox" data-q="inline"' + (s.inline ? " checked" : "") +
+        '> Show it on the same screen, right beneath that question</label>';
+    }
+  }
+  return h + '</div>';
+}
+
+function sanitizeConditions() {
+  let removed = 0;
+  DRAFT.questions.forEach((q, i) => {
+    const s = q.showIf;
+    if (!s || !s.key) return;
+    const ti = DRAFT.questions.findIndex(x => x.key === s.key);
+    const t = DRAFT.questions[ti];
+    if (ti < 0 || ti >= i || !isChoice(t)) { q.showIf = null; removed++; return; }
+    const valid = t.options.map(o => o.l).concat(t.allowOther ? [OTHER] : []);
+    s.equals = s.equals.filter(x => valid.indexOf(x) !== -1);
+  });
+  if (removed) {
+    toast(removed === 1
+      ? "One condition was removed because its trigger question moved, changed type or was deleted."
+      : removed + " conditions were removed because their trigger questions moved, changed type or were deleted.");
+  }
+}
+
+function onSetInput(e) {
+  const el = e.target;
+  const f = el.dataset.set;
+  let v = el.value;
+  if (f === "id") {
+    v = v.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-{2,}/g, "-").slice(0, 60);
+    if (el.value !== v) el.value = v;
+    ID_TOUCHED = true;
+  }
+  if (f === "tag") {
+    v = v.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 10);
+    if (el.value !== v) el.value = v;
+    const note = document.getElementById("v1note");
+    if (note) note.style.display = v === "V1" ? "" : "none";
+  }
+  DRAFT[f] = v;
+  DIRTY = true;
+  if (f === "clientName") {
+    document.getElementById("edTitle").textContent = v.trim() || "Untitled form";
+    if (IS_NEW && !ID_TOUCHED) {
+      DRAFT.id = v.trim() ? uniqueId(v) : "";
+      const idEl = app.querySelector('[data-set="id"]');
+      if (idEl) idEl.value = DRAFT.id;
+    }
+  }
+}
+
+function onQInput(e) {
+  const el = e.target;
+  if (el.type === "checkbox" || el.tagName === "SELECT") return;
+  const card = el.closest(".qcard");
+  if (!card || !el.dataset.q) return;
+  const q = qByKey(card.dataset.key);
+  if (!q) return;
+  const f = el.dataset.q;
+  if (f === "label") {
+    q.label = el.value;
+    const t = card.querySelector(".qtitle");
+    t.textContent = el.value.trim() || "Untitled question";
+    t.classList.toggle("empty-t", !el.value.trim());
+  } else if (f === "options") {
+    q.options = textToOptions(el.value);
+  } else if (f === "help" || f === "section" || f === "placeholder") {
+    q[f] = el.value;
+  }
+  DIRTY = true;
+}
+
+function onQChange(e) {
+  const el = e.target;
+  const card = el.closest(".qcard");
+  if (!card) return;
+  const q = qByKey(card.dataset.key);
+  if (!q) return;
+  DIRTY = true;
+
+  if (el.dataset.cond !== undefined) {
+    if (!q.showIf) return;
+    const v = el.dataset.cond;
+    const eq = q.showIf.equals;
+    const i = eq.indexOf(v);
+    if (el.checked && i === -1) eq.push(v);
+    if (!el.checked && i !== -1) eq.splice(i, 1);
+    return;
+  }
+
+  switch (el.dataset.q) {
+    case "options":
+      q.options = textToOptions(el.value);
+      sanitizeConditions();
+      rerenderQuestions();
+      break;
+    case "allowOther":
+      q.allowOther = el.checked;
+      sanitizeConditions();
+      rerenderQuestions();
+      break;
+    case "required":
+      q.required = el.checked;
+      break;
+    case "type":
+      q.type = el.value;
+      if (isChoice(q) && !q.options.length) {
+        q.options = [{ l: "Option one", sub: "" }, { l: "Option two", sub: "" }];
+        q.allowOther = true;
+      }
+      sanitizeConditions();
+      rerenderQuestions();
+      break;
+    case "condKey": {
+      const idx = DRAFT.questions.indexOf(q);
+      const ti = DRAFT.questions.findIndex(x => x.key === el.value);
+      q.showIf = el.value ? { key: el.value, equals: [], inline: ti === idx - 1 } : null;
+      rerenderQuestions();
+      break;
+    }
+    case "inline":
+      if (q.showIf) q.showIf.inline = el.checked;
+      break;
+  }
+}
+
+function onQClick(e) {
+  const card = e.target.closest(".qcard");
+  if (!card) return;
+  const key = card.dataset.key;
+  const idx = DRAFT.questions.findIndex(q => q.key === key);
+  if (idx < 0) return;
+  const btn = e.target.closest("button");
+  if (btn) {
+    if (btn.dataset.move) {
+      const to = idx + Number(btn.dataset.move);
+      if (to < 0 || to >= DRAFT.questions.length) return;
+      const arr = DRAFT.questions;
+      const tmp = arr[idx]; arr[idx] = arr[to]; arr[to] = tmp;
+      sanitizeConditions();
+      DIRTY = true;
+      rerenderQuestions();
+      return;
+    }
+    if (btn.hasAttribute("data-dup")) {
+      const c = JSON.parse(JSON.stringify(DRAFT.questions[idx]));
+      c.key = genKey();
+      c.label = c.label ? c.label + " (copy)" : "";
+      DRAFT.questions.splice(idx + 1, 0, c);
+      OPEN.add(c.key);
+      DIRTY = true;
+      rerenderQuestions();
+      return;
+    }
+    if (btn.hasAttribute("data-del")) {
+      const q = DRAFT.questions[idx];
+      if (q.label.trim() && !confirm("Delete this question?")) return;
+      DRAFT.questions.splice(idx, 1);
+      OPEN.delete(key);
+      sanitizeConditions();
+      DIRTY = true;
+      rerenderQuestions();
+      return;
+    }
+    return;
+  }
+  if (e.target.closest(".qtop")) {
+    if (OPEN.has(key)) OPEN.delete(key); else OPEN.add(key);
+    rerenderQuestions();
+  }
+}
+
+function addQuestion(type) {
+  const q = newQuestion(type);
+  DRAFT.questions.push(q);
+  OPEN.add(q.key);
+  DIRTY = true;
+  rerenderQuestions();
+  const c = document.getElementById("qc-" + q.key);
+  if (c) {
+    c.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => { const i = c.querySelector('[data-q="label"]'); if (i) i.focus(); }, 300);
+  }
+}
+
+function leaveEditor() {
+  if (DIRTY && !confirm("You have unsaved changes. Leave anyway?")) return;
+  DIRTY = false;
+  showList();
+}
+
+function validate() {
+  const d = DRAFT;
+  if (!/^[a-z0-9][a-z0-9-]{1,59}$/.test(d.id || "")) {
+    return { ok: false, field: "id", msg: "Give the form an ID: at least 2 characters, lowercase letters, numbers and dashes." };
+  }
+  if (IS_NEW && FORMS.some(f => f.id === d.id)) {
+    return { ok: false, field: "id", msg: "That form ID is already used. Pick another one." };
+  }
+  if (!d.questions.length) return { ok: false, msg: "Add at least one question." };
+  for (let i = 0; i < d.questions.length; i++) {
+    const q = d.questions[i];
+    if (!q.label.trim()) return { ok: false, key: q.key, msg: "Q" + (i + 1) + " needs the question text." };
+    if (isChoice(q)) {
+      if (!q.options.length) return { ok: false, key: q.key, msg: "Q" + (i + 1) + " needs at least one option." };
+      const seen = {};
+      for (const o of q.options) {
+        const k = o.l.toLowerCase();
+        if (seen[k]) return { ok: false, key: q.key, msg: "Q" + (i + 1) + " has the option \"" + o.l + "\" twice." };
+        seen[k] = true;
+      }
+    }
+  }
+  if (!d.clientName.trim() && !d.contact.name && !d.contact.email) {
+    return { ok: false, msg: "This is a general form with no client name, so turn on the Name or Email field in the details step so you know who answered." };
+  }
+  return { ok: true };
+}
+
+function showValidation(v) {
+  toast(v.msg);
+  if (v.key) {
+    OPEN.add(v.key);
+    rerenderQuestions();
+    const c = document.getElementById("qc-" + v.key);
+    if (c) c.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else if (v.field) {
+    const el = app.querySelector('[data-set="' + v.field + '"]');
+    if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.focus(); }
+  }
+}
+
+function preview() {
+  const f = cleanForm();
+  f.questions = f.questions.filter(q => q.label);
+  if (!f.questions.length) return toast("Add at least one question to preview.");
+  try {
+    localStorage.setItem("ss_portal_draft", JSON.stringify(f));
+  } catch (e) {
+    return toast("Preview needs browser storage, which is blocked in this browser.");
+  }
+  window.open(CONFIG.formPageUrl + "?preview=draft", "_blank");
+}
+
+async function save() {
+  const v = validate();
+  if (!v.ok) return showValidation(v);
+  const form = cleanForm();
+  const link = linkFor(form.id);
+  const btn = document.getElementById("saveBtn");
+  btn.disabled = true;
+  btn.textContent = "Saving";
+  try {
+    const r = await api("save", { form: form, isNew: IS_NEW, link: link });
+    if (!r || !r.ok) {
+      const msgs = {
+        id_taken: "That form ID is already used. Pick another one.",
+        bad_id: "The form ID can only use lowercase letters, numbers and dashes.",
+        too_large: "This form is too long to store in one cell. Split it into two forms.",
+        no_questions: "Add at least one question."
+      };
+      handleApiError(r, msgs[r && r.error] || "Could not save. Try again.");
+      return;
+    }
+    const wasNew = IS_NEW;
+    IS_NEW = false;
+    ID_TOUCHED = true;
+    DIRTY = false;
+    const entry = {
+      id: form.id, clientName: form.clientName, tag: form.tag, status: "live",
+      questions: form.questions.length, updatedAt: "just now", link: link
+    };
+    const existing = FORMS.find(x => x.id === form.id);
+    if (existing) {
+      entry.status = existing.status;
+      Object.assign(existing, entry);
+    } else {
+      FORMS.push(entry);
+    }
+    showEditor();
+    showSaved(link, form, wasNew);
+  } catch (e) {
+    toast("Could not save. Check your connection and try again.");
+  } finally {
+    const b = document.getElementById("saveBtn");
+    if (b) { b.disabled = false; b.textContent = IS_NEW ? "Save and get link" : "Save changes"; }
+  }
+}
+
+function showSaved(link, form, wasNew) {
+  const who = form.clientName || "your client";
+  const m = openModal(
+    '<h2>' + (wasNew ? "Saved. Your form is live." : "Changes saved.") + '</h2>' +
+    '<p class="muted">' + (wasNew
+      ? "Send this link to " + esc(who) + "."
+      : "The same link now shows the updated questions.") +
+    ' Answers land in your Google Sheet under All Responses and in the tab "Form - ' + esc(form.id) + '".</p>' +
+    '<input class="inp" readonly value="' + esc(link) + '" style="margin-top:14px" id="savedLink">' +
+    '<div class="row" style="justify-content:flex-end;margin-top:16px">' +
+      '<button class="btn ghost" data-close>Close</button>' +
+      '<button class="btn ghost" id="mOpen">Open</button>' +
+      '<button class="btn primary" id="mCopy">Copy link</button>' +
+    '</div>'
+  );
+  m.querySelector("#mCopy").addEventListener("click", () => copyText(link));
+  m.querySelector("#mOpen").addEventListener("click", () => window.open(link, "_blank", "noopener"));
+  const li = m.querySelector("#savedLink");
+  li.addEventListener("focus", () => li.select());
+}
+
+/* ---------------- boot ---------------- */
+if (PASS) showList(); else showLogin();
+</script>
+</body>
+</html>

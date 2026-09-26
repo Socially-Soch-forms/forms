@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Socially Soch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:        #2F1A0E;
+  --bg-card:   #3F2418;
+  --bg-card-2: #4A2C1E;
+  --border:    rgba(187,148,87,0.26);
+  --tan:       #BB9457;
+  --text:      #F5E5C4;
+  --text-soft: rgba(245,229,196,0.72);
+  --text-mute: rgba(245,229,196,0.45);
+  --burgundy:  #6F1D1B;
+  --burgundy-2:#8A2826;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  max-width:640px;margin:0 auto;min-height:100vh;
+  display:flex;flex-direction:column;padding:24px 24px 32px;
+}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0 10px}
+.wordmark{font-weight:600;font-size:14px;letter-spacing:0.04em;color:var(--text)}
+.progress-text{font-size:12px;letter-spacing:0.06em;color:var(--text-mute)}
+.progress-bar{
+  position:relative;height:3px;background:rgba(187,148,87,0.18);
+  border-radius:2px;overflow:hidden;margin-bottom:28px;
+}
+.progress-bar .fill{
+  position:absolute;top:0;left:0;bottom:0;background:var(--tan);
+  width:0%;transition:width 0.4s ease;
+}
+.stage{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0}
+.greeting{font-size:14px;color:var(--text-soft);margin-bottom:18px}
+.banner{
+  font-size:12px;color:var(--text-soft);background:rgba(187,148,87,0.12);
+  border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:18px;
+}
+.q-label{display:block;font-size:22px;font-weight:600;margin-bottom:10px;color:var(--text);line-height:1.35}
+.q-label .optional{font-size:12px;font-weight:500;color:var(--text-mute);margin-left:6px}
+.q-help{font-size:14px;color:var(--text-soft);margin-bottom:24px;line-height:1.55;white-space:pre-line}
+.qblock.follow{margin-top:26px;padding-top:22px;border-top:1px dashed var(--border)}
+.qblock.follow .q-label{font-size:18px}
+.qblock.follow .q-help{margin-bottom:16px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;
+  transition:border-color 0.15s, background 0.15s;
+}
+.opt:hover{border-color:var(--tan);background:var(--bg-card-2)}
+.opt.selected{border-color:var(--tan);background:rgba(187,148,87,0.10)}
+.opt .mark{
+  width:16px;height:16px;border-radius:50%;border:1px solid var(--border);
+  flex-shrink:0;margin-top:2px;transition:all 0.15s;
+}
+.opt.multi .mark{border-radius:4px}
+.opt.selected .mark{
+  border-color:var(--tan);background:var(--tan);
+  box-shadow:inset 0 0 0 3px var(--bg-card);
+}
+.opt .text{font-size:14px;color:var(--text);line-height:1.4;flex:1}
+.opt .text .sub{display:block;font-size:12px;color:var(--text-mute);margin-top:3px}
+.hint{font-size:12px;color:var(--text-mute);margin-top:10px}
+
+.text-input,
+.text-area,
+.other-input{
+  width:100%;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;color:var(--text);
+  font-family:inherit;font-size:14px;
+}
+.other-input{margin-top:8px}
+.text-area{min-height:120px;resize:vertical;line-height:1.55}
+.text-input:focus,.text-area:focus,.other-input:focus{outline:none;border-color:var(--tan)}
+.text-input::placeholder,.text-area::placeholder,.other-input::placeholder{color:var(--text-mute)}
+.other-input.hidden{display:none}
+
+.navrow{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:24px;margin-top:24px;border-top:1px solid var(--border);
+}
+.back{
+  background:none;border:none;color:var(--text-mute);
+  font-family:inherit;font-size:14px;cursor:pointer;padding:6px 0;
+}
+.back:hover{color:var(--text)}
+.back:disabled{opacity:0.4;cursor:not-allowed}
+.next{
+  background:var(--burgundy);color:var(--text);border:none;border-radius:6px;
+  padding:10px 24px;font-family:inherit;font-size:14px;font-weight:500;
+  cursor:pointer;transition:background 0.15s;
+}
+.next:hover{background:var(--burgundy-2)}
+.next:disabled{background:var(--bg-card);color:var(--text-mute);cursor:not-allowed}
+
+.center{flex:1;display:flex;flex-direction:column;justify-content:center}
+.center h1{font-size:26px;font-weight:600;margin-bottom:10px}
+.center p{color:var(--text-soft);margin-bottom:20px}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;color:var(--text-soft);margin-bottom:6px}
+.field input{
+  width:100%;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:6px;padding:10px 12px;color:var(--text);
+  font-family:inherit;font-size:14px;
+}
+.field input:focus{outline:none;border-color:var(--tan)}
+
+@media (max-width:560px){
+  .q-label{font-size:20px}
+  .qblock.follow .q-label{font-size:17px}
+  .center h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="wordmark">Socially Soch</div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+  <div class="progress-bar" id="progressBar" style="display:none">
+    <div class="fill" id="progressFill" style="width:0%"></div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="center"><p>Loading…</p></div>
+  </div>
+
+  <div class="navrow" id="navrow" style="display:none">
+    <button class="back" id="backBtn" type="button">Back</button>
+    <button class="next" id="nextBtn" type="button">Continue</button>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   Socially Soch shared form page.
+   Every form built in the portal opens here:
+     form.html?id=<form-id>
+   The questions live in the "Forms" tab of the Google Sheet.
+   ========================================================= */
+const CONFIG = {
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbz2Hdiw6UIsTOvcwNov5lOqa8V0M3eHKZs1LD9d4ryj2pcsoBry2V6v2qPWlsWPTJ9c5Q/exec"
+};
+
+const OTHER = "__other__";
+const params = new URLSearchParams(location.search);
+const FORM_ID = (params.get("id") || "").trim();
+const IS_PREVIEW = params.get("preview") === "draft";
+
+const stageEl = document.getElementById("stage");
+const navrowEl = document.getElementById("navrow");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const progressBar = document.getElementById("progressBar");
+
+let FORM = null;
+let PAGES = [];      // each page is a list of questions shown together
+let QMAP = {};       // key -> question
+const state = {
+  cur: null,         // page index, "contact" or "done"
+  answers: {},
+  others: {},
+  user: { name: "", phone: "", email: "", handle: "" }
+};
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function fillName(t) {
+  const name = (FORM && FORM.clientName) || state.user.name || "there";
+  return String(t || "").replace(/\{name\}/g, name);
+}
+function scrollTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+function fail(msg) {
+  navrowEl.style.display = "none";
+  progressBar.style.display = "none";
+  progressText.textContent = "";
+  stageEl.innerHTML = '<div class="center"><h1>' + esc(msg) + '</h1></div>';
+}
+
+/* ---------------- load ---------------- */
+async function load() {
+  try {
+    if (IS_PREVIEW) {
+      let raw = null;
+      try { raw = localStorage.getItem("ss_portal_draft"); } catch (e) {}
+      if (!raw) return fail("Nothing to preview. Open the preview from the portal.");
+      FORM = JSON.parse(raw);
+    } else {
+      if (!FORM_ID) return fail("This link is missing the form id.");
+      const res = await fetch(CONFIG.appsScriptUrl + "?action=form&id=" + encodeURIComponent(FORM_ID));
+      const data = await res.json();
+      if (!data || !data.ok) return fail("This form could not be found.");
+      if (data.status === "closed") return fail("This form is closed.");
+      FORM = data.form;
+    }
+    start();
+  } catch (e) {
+    fail("Could not load the form. Please refresh the page.");
+  }
+}
+
+function start() {
+  if (!FORM || !Array.isArray(FORM.questions) || !FORM.questions.length) {
+    return fail("This form has no questions yet.");
+  }
+  FORM.contact = Object.assign(
+    { name: true, phone: true, email: true, emailRequired: true, instagram: false, position: "end" },
+    FORM.contact || {}
+  );
+  state.user.name = FORM.clientName || "";
+  document.title = (FORM.clientName ? FORM.clientName + " · " : "") + "Socially Soch";
+
+  QMAP = {};
+  FORM.questions.forEach(q => { QMAP[q.key] = q; });
+  buildPages();
+
+  const first = nextVisible(-1);
+  if (contactFirst()) state.cur = "contact";
+  else state.cur = first === -1 ? (hasContact() ? "contact" : "done") : first;
+  render();
+}
+
+/* ---------------- pages and conditions ---------------- */
+function buildPages() {
+  PAGES = [];
+  const pageOf = {};
+  FORM.questions.forEach(q => {
+    const s = q.showIf;
+    if (s && s.key && s.inline && pageOf[s.key] !== undefined) {
+      PAGES[pageOf[s.key]].push(q);
+      pageOf[q.key] = pageOf[s.key];
+    } else {
+      PAGES.push([q]);
+      pageOf[q.key] = PAGES.length - 1;
+    }
+  });
+}
+
+function answerList(key) {
+  const a = state.answers[key];
+  if (Array.isArray(a)) return a;
+  if (typeof a === "string" && a.trim()) return [a];
+  return [];
+}
+
+function isVisible(q, depth) {
+  depth = depth || 0;
+  if (depth > 25) return true;
+  const s = q.showIf;
+  if (!s || !s.key) return true;
+  const trigger = QMAP[s.key];
+  if (!trigger) return true;
+  if (!isVisible(trigger, depth + 1)) return false;
+  const vals = answerList(s.key);
+  if (!vals.length) return false;
+  if (!s.equals || !s.equals.length) return true;
+  return s.equals.some(x => vals.indexOf(x) !== -1);
+}
+
+function nextVisible(from) {
+  for (let i = from + 1; i < PAGES.length; i++) if (isVisible(PAGES[i][0])) return i;
+  return -1;
+}
+function prevVisible(from) {
+  for (let i = from - 1; i >= 0; i--) if (isVisible(PAGES[i][0])) return i;
+  return -1;
+}
+function visibleList() {
+  const out = [];
+  for (let i = 0; i < PAGES.length; i++) if (isVisible(PAGES[i][0])) out.push(i);
+  return out;
+}
+function hasContact() {
+  const c = FORM.contact;
+  return !!(c.name || c.phone || c.email || c.instagram);
+}
+function contactFirst() {
+  return hasContact() && FORM.contact.position === "start";
+}
+
+/* ---------------- answers ---------------- */
+function isAnswered(q) {
+  const a = state.answers[q.key];
+  const otherText = (state.others[q.key] || "").trim();
+  if (q.type === "text" || q.type === "textarea") return typeof a === "string" && a.trim().length > 0;
+  if (q.type === "multi") {
+    if (!Array.isArray(a) || !a.length) return false;
+    if (a.indexOf(OTHER) !== -1) return !!otherText;
+    return true;
+  }
+  if (!a) return false;
+  if (a === OTHER) return !!otherText;
+  return true;
+}
+function pageOk(i) {
+  return PAGES[i].every(q => !isVisible(q) || q.required === false || isAnswered(q));
+}
+function clearAnswer(key) {
+  delete state.answers[key];
+  delete state.others[key];
+}
+
+/* ---------------- render ---------------- */
+function render() {
+  if (typeof state.cur === "number") return renderPage(state.cur);
+  if (state.cur === "contact") return renderContact();
+  return renderClosing();
+}
+
+function updateProgress() {
+  const vis = visibleList();
+  if (typeof state.cur === "number") {
+    const pos = Math.max(vis.indexOf(state.cur), 0);
+    progressBar.style.display = "block";
+    progressFill.style.width = (vis.length ? (pos / vis.length) * 100 : 0) + "%";
+    progressText.textContent = (pos + 1) + " of " + vis.length;
+  } else if (state.cur === "contact") {
+    progressBar.style.display = "block";
+    progressFill.style.width = contactFirst() ? "0%" : "100%";
+    progressText.textContent = contactFirst() ? "Start here" : "Last bit";
+  } else {
+    progressBar.style.display = "none";
+    progressText.textContent = "";
+  }
+}
+
+function questionHtml(q) {
+  let h = '<label class="q-label">' + esc(q.label) +
+    (q.required === false ? '<span class="optional">Optional</span>' : '') + '</label>';
+  if (q.help) h += '<div class="q-help">' + esc(q.help) + '</div>';
+  const k = esc(q.key);
+
+  if (q.type === "text") {
+    h += '<input class="text-input" type="text" data-key="' + k + '" placeholder="' + esc(q.placeholder || "") +
+         '" value="' + esc(state.answers[q.key] || "") + '">';
+  } else if (q.type === "textarea") {
+    h += '<textarea class="text-area" data-key="' + k + '" placeholder="' + esc(q.placeholder || "") + '">' +
+         esc(state.answers[q.key] || "") + '</textarea>';
+  } else {
+    const multi = q.type === "multi";
+    const sel = state.answers[q.key] || (multi ? [] : "");
+    h += '<div class="opts" data-key="' + k + '">';
+    (q.options || []).forEach(o => {
+      const on = multi ? sel.indexOf(o.l) !== -1 : sel === o.l;
+      h += '<div class="opt' + (on ? ' selected' : '') + (multi ? ' multi' : '') + '" data-v="' + esc(o.l) + '">' +
+             '<div class="mark"></div>' +
+             '<div class="text">' + esc(o.l) + (o.sub ? '<span class="sub">' + esc(o.sub) + '</span>' : '') + '</div>' +
+           '</div>';
+    });
+    if (q.allowOther) {
+      const on = multi ? sel.indexOf(OTHER) !== -1 : sel === OTHER;
+      h += '<div class="opt' + (on ? ' selected' : '') + (multi ? ' multi' : '') + '" data-v="' + OTHER + '">' +
+             '<div class="mark"></div><div class="text">Something else</div></div>';
+      h += '<input class="other-input' + (on ? '' : ' hidden') + '" type="text" data-key="' + k +
+           '" placeholder="Type your answer here" value="' + esc(state.others[q.key] || "") + '">';
+    }
+    h += '</div>';
+    if (multi) h += '<div class="hint">Pick as many as you like.</div>';
+  }
+  return h;
+}
+
+function renderPage(i) {
+  navrowEl.style.display = "flex";
+  let html = "";
+  if (IS_PREVIEW) html += '<div class="banner">Preview. Answers are not saved.</div>';
+  const greeting = FORM.greeting == null ? "Hey {name}." : FORM.greeting;
+  if (i === nextVisible(-1) && !contactFirst() && greeting) {
+    html += '<div class="greeting">' + esc(fillName(greeting)) + '</div>';
+  }
+  PAGES[i].forEach((q, idx) => {
+    const vis = isVisible(q);
+    html += '<div class="qblock' + (idx > 0 ? ' follow' : '') + '" data-block="' + esc(q.key) + '"' +
+            (vis ? '' : ' style="display:none"') + '>' + questionHtml(q) + '</div>';
+  });
+  stageEl.innerHTML = html;
+  updateProgress();
+  updateNav();
+}
+
+function refreshBlocks() {
+  if (typeof state.cur !== "number") return;
+  PAGES[state.cur].forEach((q, idx) => {
+    if (idx === 0) return;
+    const blk = stageEl.querySelector('[data-block="' + q.key + '"]');
+    if (!blk) return;
+    const vis = isVisible(q);
+    if (!vis && (state.answers[q.key] !== undefined || state.others[q.key] !== undefined)) {
+      clearAnswer(q.key);
+      blk.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+      blk.querySelectorAll("input, textarea").forEach(inp => { inp.value = ""; });
+      const oi = blk.querySelector(".other-input");
+      if (oi) oi.classList.add("hidden");
+    }
+    blk.style.display = vis ? "" : "none";
+  });
+}
+
+function toggleOther(optsEl, show, key) {
+  const oi = optsEl.querySelector(".other-input");
+  if (!oi) return;
+  if (show) { oi.classList.remove("hidden"); oi.focus(); }
+  else { oi.classList.add("hidden"); oi.value = ""; delete state.others[key]; }
+}
+
+function afterChange() {
+  refreshBlocks();
+  updateProgress();
+  updateNav();
+}
+
+function updateNav() {
+  if (typeof state.cur !== "number") return;
+  const i = state.cur;
+  nextBtn.disabled = !pageOk(i);
+  const isLast = nextVisible(i) === -1;
+  nextBtn.textContent = isLast && (!hasContact() || contactFirst()) ? "Send" : "Continue";
+  backBtn.disabled = prevVisible(i) === -1 && !contactFirst();
+}
+
+function field(id, label, type, ph, val) {
+  return '<div class="field"><label for="' + id + '">' + esc(label) + '</label>' +
+         '<input id="' + id + '" type="' + type + '" placeholder="' + esc(ph) + '" value="' + esc(val || "") + '"></div>';
+}
+
+function renderContact() {
+  navrowEl.style.display = "flex";
+  updateProgress();
+  const c = FORM.contact;
+  const first = contactFirst();
+  let h = '';
+  if (IS_PREVIEW) h += '<div class="banner">Preview. Answers are not saved.</div>';
+  const greeting = FORM.greeting == null ? "Hey {name}." : FORM.greeting;
+  if (first && greeting && FORM.clientName) h += '<div class="greeting">' + esc(fillName(greeting)) + '</div>';
+  const title = c.title || (first ? "First, a few details." : "Confirm your details");
+  const help = c.help != null && c.help !== "" ? c.help : (first ? "" : "So we send the next move to the right place.");
+  h += '<label class="q-label">' + esc(title) + '</label>';
+  if (help) h += '<div class="q-help">' + esc(help) + '</div>';
+  if (c.name)      h += field("fName", "Your name", "text", "Your full name", state.user.name);
+  if (c.instagram) h += field("fHandle", "Your Instagram handle", "text", "@yourhandle", state.user.handle);
+  if (c.email)     h += field("fEmail", "Email", "email", "you@email.com", state.user.email);
+  if (c.phone)     h += field("fPhone", "Phone", "tel", "+91", state.user.phone);
+  stageEl.innerHTML = h;
+  ["fName", "fHandle", "fPhone", "fEmail"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", syncContact);
+  });
+  nextBtn.textContent = first ? "Begin" : "Send";
+  backBtn.disabled = first || visibleList().length === 0;
+  syncContact();
+}
+
+function syncContact() {
+  const c = FORM.contact;
+  const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : null; };
+  const n = val("fName"), p = val("fPhone"), m = val("fEmail"), ih = val("fHandle");
+  if (n !== null) state.user.name = n;
+  if (p !== null) state.user.phone = p;
+  if (m !== null) state.user.email = m;
+  if (ih !== null) state.user.handle = ih;
+  let ok = true;
+  if (c.email && c.emailRequired !== false) ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.user.email || "");
+  if (c.name && !FORM.clientName) ok = ok && !!state.user.name;
+  nextBtn.disabled = !ok;
+}
+
+function renderClosing() {
+  navrowEl.style.display = "none";
+  updateProgress();
+  const title = FORM.closingTitle == null ? "Thanks {name}." : FORM.closingTitle;
+  const text = FORM.closingText == null ? "We will get back to you within 48 hours." : FORM.closingText;
+  stageEl.innerHTML =
+    '<div class="center">' +
+      '<h1>' + esc(fillName(title)) + '</h1>' +
+      (text ? '<p>' + esc(fillName(text)) + '</p>' : '') +
+      (IS_PREVIEW ? '<p style="font-size:12px;color:var(--text-mute)">Preview only. Nothing was sent to the sheet.</p>' : '') +
+    '</div>';
+}
+
+/* ---------------- events ---------------- */
+stageEl.addEventListener("click", e => {
+  const opt = e.target.closest(".opt");
+  if (!opt) return;
+  const opts = opt.closest(".opts");
+  const key = opts.dataset.key;
+  const q = QMAP[key];
+  if (!q) return;
+  const v = opt.dataset.v;
+  if (q.type === "multi") {
+    const cur = (state.answers[key] || []).slice();
+    const i = cur.indexOf(v);
+    if (i >= 0) { cur.splice(i, 1); opt.classList.remove("selected"); }
+    else { cur.push(v); opt.classList.add("selected"); }
+    state.answers[key] = cur;
+    if (v === OTHER) toggleOther(opts, cur.indexOf(OTHER) !== -1, key);
+  } else {
+    state.answers[key] = v;
+    opts.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+    opt.classList.add("selected");
+    toggleOther(opts, v === OTHER, key);
+  }
+  afterChange();
+});
+
+stageEl.addEventListener("input", e => {
+  const el = e.target;
+  const key = el.dataset ? el.dataset.key : null;
+  if (!key) return;
+  if (el.classList.contains("other-input")) state.others[key] = el.value;
+  else if (el.classList.contains("text-input") || el.classList.contains("text-area")) state.answers[key] = el.value;
+  else return;
+  afterChange();
+});
+
+nextBtn.addEventListener("click", () => {
+  if (nextBtn.disabled) return;
+  if (state.cur === "contact") {
+    if (contactFirst()) {
+      const f = nextVisible(-1);
+      if (f !== -1) { state.cur = f; render(); scrollTop(); return; }
+    }
+    return submit();
+  }
+  const n = nextVisible(state.cur);
+  if (n !== -1) { state.cur = n; render(); scrollTop(); return; }
+  if (hasContact() && !contactFirst()) { state.cur = "contact"; render(); scrollTop(); return; }
+  submit();
+});
+
+backBtn.addEventListener("click", () => {
+  if (backBtn.disabled) return;
+  if (state.cur === "contact") {
+    if (contactFirst()) return;
+    const p = prevVisible(PAGES.length);
+    if (p !== -1) { state.cur = p; render(); scrollTop(); }
+    return;
+  }
+  const p = prevVisible(state.cur);
+  if (p !== -1) { state.cur = p; render(); scrollTop(); }
+  else if (contactFirst()) { state.cur = "contact"; render(); scrollTop(); }
+});
+
+/* ---------------- submit ---------------- */
+function submit() {
+  const order = [], labels = {}, sections = {}, answers = {};
+  FORM.questions.forEach(q => {
+    if (!isVisible(q)) return;
+    const a = state.answers[q.key];
+    const otherText = (state.others[q.key] || "").trim() || "Something else";
+    let text = "";
+    if (Array.isArray(a)) text = a.map(x => x === OTHER ? otherText : x).join(", ");
+    else if (typeof a === "string") text = a === OTHER ? otherText : a.trim();
+    order.push(q.key);
+    labels[q.key] = q.label;
+    sections[q.key] = q.section || "General";
+    answers[q.key] = text;
+  });
+
+  const payload = {
+    formType: "portal",
+    formId: FORM.id || "",
+    tag: FORM.tag || "FORM",
+    clientName: FORM.clientName || "",
+    submittedAt: new Date().toISOString(),
+    user: { name: state.user.name, phone: state.user.phone, email: state.user.email, handle: state.user.handle },
+    answers: answers,
+    questionLabels: labels,
+    questionSections: sections,
+    questionOrder: order
+  };
+
+  if (IS_PREVIEW) {
+    console.log("Preview payload (not sent):", payload);
+    state.cur = "done"; render(); scrollTop();
+    return;
+  }
+
+  nextBtn.disabled = true;
+  nextBtn.textContent = "Sending";
+  fetch(CONFIG.appsScriptUrl, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => { state.cur = "done"; render(); scrollTop(); })
+  .catch(() => { nextBtn.disabled = false; nextBtn.textContent = "Try again"; });
+}
+
+load();
+</script>
+</body>
+</html>

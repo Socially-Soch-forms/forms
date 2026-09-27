@@ -142,6 +142,7 @@ let PASS = "";
 try { PASS = sessionStorage.getItem("ss_portal_pass") || ""; } catch (e) {}
 let VIEW = "login";
 let FORMS = [];
+let SHEET = { sheetUrl: "", allResponsesUrl: "" };
 let DRAFT = null;
 let IS_NEW = true;
 let ID_TOUCHED = false;
@@ -160,6 +161,11 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
 }
 function linkFor(id) { return CONFIG.formPageUrl + "?id=" + encodeURIComponent(id); }
+function whatsappUrl(name, link) {
+  const hi = name ? "Hi " + name + ", " : "Hi, ";
+  return "https://wa.me/?text=" + encodeURIComponent(hi + "here is a short form so we can plan your strategy. It takes a few minutes: " + link);
+}
+function responsesFor(f) { return (f && f.responsesUrl) || SHEET.allResponsesUrl || SHEET.sheetUrl || ""; }
 function isChoice(q) { return q.type === "single" || q.type === "multi"; }
 function qByKey(k) { return DRAFT ? DRAFT.questions.find(q => q.key === k) : null; }
 
@@ -603,7 +609,8 @@ async function showList() {
   document.getElementById("lockBtn").addEventListener("click", () => lockOut("Locked."));
   app.innerHTML =
     '<div class="bar"><div><h1>Your forms</h1><p class="muted small" style="margin-top:4px">Every form lands in the same Google Sheet.</p></div>' +
-    '<button class="btn primary" id="newBtn">New form</button></div>' +
+    '<div class="row"><button class="btn ghost" id="sheetBtn" disabled>Open Google Sheet</button>' +
+    '<button class="btn primary" id="newBtn">New form</button></div></div>' +
     '<div id="list" class="list"><div class="muted">Loading forms…</div></div>';
   document.getElementById("newBtn").addEventListener("click", openTemplatePicker);
   const listEl = document.getElementById("list");
@@ -615,6 +622,12 @@ async function showList() {
       return handleApiError(r, "Could not load forms.");
     }
     FORMS = r.forms || [];
+    SHEET = { sheetUrl: r.sheetUrl || "", allResponsesUrl: r.allResponsesUrl || "" };
+    const sb = document.getElementById("sheetBtn");
+    if (sb && SHEET.sheetUrl) {
+      sb.disabled = false;
+      sb.addEventListener("click", () => window.open(SHEET.sheetUrl, "_blank", "noopener"));
+    }
     renderList();
   } catch (e) {
     listEl.innerHTML = '<div class="err">Could not load forms. Refresh to try again.</div>';
@@ -641,7 +654,9 @@ function renderList() {
       '<div class="factions">' +
         '<button class="btn primary small" data-act="edit" data-id="' + esc(f.id) + '">Edit</button>' +
         '<button class="btn ghost small" data-act="copy" data-id="' + esc(f.id) + '">Copy link</button>' +
+        '<button class="btn ghost small" data-act="whatsapp" data-id="' + esc(f.id) + '">Send on WhatsApp</button>' +
         '<button class="btn ghost small" data-act="open" data-id="' + esc(f.id) + '">Open</button>' +
+        '<button class="btn ghost small" data-act="responses" data-id="' + esc(f.id) + '">' + (f.responsesUrl ? "Responses" : "Responses (none yet)") + '</button>' +
         '<button class="btn ghost small" data-act="dup" data-id="' + esc(f.id) + '">Duplicate</button>' +
         '<button class="btn ghost small" data-act="status" data-id="' + esc(f.id) + '">' + (closed ? "Reopen" : "Close") + '</button>' +
         '<button class="btn ghost small danger" data-act="delete" data-id="' + esc(f.id) + '">Delete</button>' +
@@ -660,6 +675,13 @@ async function onListClick(e) {
 
   if (act === "copy") return copyText(link);
   if (act === "open") return window.open(link, "_blank", "noopener");
+  if (act === "whatsapp") return window.open(whatsappUrl(f.clientName, link), "_blank", "noopener");
+  if (act === "responses") {
+    const u = responsesFor(f);
+    if (!u) return toast("No responses yet.");
+    if (!f.responsesUrl) toast("No answers for this form yet. Opening All Responses.");
+    return window.open(u, "_blank", "noopener");
+  }
 
   if (act === "edit" || act === "dup") {
     btn.disabled = true;
@@ -758,7 +780,13 @@ function showEditor() {
     '<div class="bar"><div>' +
       '<div class="crumb"><a id="backLink">Your forms</a> / ' + (IS_NEW ? "New form" : "Edit form") + '</div>' +
       '<h1 id="edTitle">' + esc(d.clientName || "Untitled form") + '</h1>' +
-      (IS_NEW ? '' : '<div class="flink" style="margin:6px 0 0">' + esc(linkFor(d.id)) + '</div>') +
+      (IS_NEW ? '' : '<div class="flink" style="margin:6px 0 8px">' + esc(linkFor(d.id)) + '</div>' +
+        '<div class="row">' +
+          '<button class="btn ghost small" id="edCopy">Copy link</button>' +
+          '<button class="btn ghost small" id="edWa">Send on WhatsApp</button>' +
+          '<button class="btn ghost small" id="edOpen">Open form</button>' +
+          '<button class="btn ghost small" id="edResp">Responses</button>' +
+        '</div>') +
     '</div></div>' +
 
     '<section class="card"><h2>Form settings</h2>' +
@@ -827,6 +855,17 @@ function showEditor() {
   document.getElementById("backLink").addEventListener("click", leaveEditor);
   document.getElementById("previewBtn").addEventListener("click", preview);
   document.getElementById("saveBtn").addEventListener("click", save);
+  if (!IS_NEW) {
+    const link = linkFor(d.id);
+    const entry = FORMS.find(x => x.id === d.id);
+    document.getElementById("edCopy").addEventListener("click", () => copyText(link));
+    document.getElementById("edWa").addEventListener("click", () => window.open(whatsappUrl(d.clientName, link), "_blank", "noopener"));
+    document.getElementById("edOpen").addEventListener("click", () => window.open(link, "_blank", "noopener"));
+    document.getElementById("edResp").addEventListener("click", () => {
+      const u = responsesFor(entry);
+      if (u) window.open(u, "_blank", "noopener"); else toast("No responses yet.");
+    });
+  }
 }
 
 function rerenderQuestions() {
@@ -1199,10 +1238,12 @@ function showSaved(link, form, wasNew) {
     '<div class="row" style="justify-content:flex-end;margin-top:16px">' +
       '<button class="btn ghost" data-close>Close</button>' +
       '<button class="btn ghost" id="mOpen">Open</button>' +
+      '<button class="btn ghost" id="mWa">Send on WhatsApp</button>' +
       '<button class="btn primary" id="mCopy">Copy link</button>' +
     '</div>'
   );
   m.querySelector("#mCopy").addEventListener("click", () => copyText(link));
+  m.querySelector("#mWa").addEventListener("click", () => window.open(whatsappUrl(form.clientName, link), "_blank", "noopener"));
   m.querySelector("#mOpen").addEventListener("click", () => window.open(link, "_blank", "noopener"));
   const li = m.querySelector("#savedLink");
   li.addEventListener("focus", () => li.select());

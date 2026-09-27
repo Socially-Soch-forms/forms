@@ -163,7 +163,9 @@ const CONFIG = {
 
 const OTHER = "__other__";
 const params = new URLSearchParams(location.search);
-const FORM_ID = (params.get("id") || "").trim();
+// Keep only letters, numbers and dashes, so a link that picked up a stray
+// full stop or space when pasted into WhatsApp still opens the form.
+const FORM_ID = (params.get("id") || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
 const IS_PREVIEW = params.get("preview") === "draft";
 
 const stageEl = document.getElementById("stage");

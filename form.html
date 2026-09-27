@@ -1,151 +1,401 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Socially Soch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:        #2F1A0E;
-  --bg-card:   #3F2418;
-  --bg-card-2: #4A2C1E;
-  --border:    rgba(187,148,87,0.26);
-  --tan:       #BB9457;
-  --text:      #F5E5C4;
-  --text-soft: rgba(245,229,196,0.72);
-  --text-mute: rgba(245,229,196,0.45);
-  --burgundy:  #6F1D1B;
-  --burgundy-2:#8A2826;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
-  font-size:15px;line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{
-  max-width:640px;margin:0 auto;min-height:100vh;
-  display:flex;flex-direction:column;padding:24px 24px 32px;
-}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0 10px}
-.wordmark{font-weight:600;font-size:14px;letter-spacing:0.04em;color:var(--text)}
-.progress-text{font-size:12px;letter-spacing:0.06em;color:var(--text-mute)}
-.progress-bar{
-  position:relative;height:3px;background:rgba(187,148,87,0.18);
-  border-radius:2px;overflow:hidden;margin-bottom:28px;
-}
-.progress-bar .fill{
-  position:absolute;top:0;left:0;bottom:0;background:var(--tan);
-  width:0%;transition:width 0.4s ease;
-}
-.stage{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0}
-.greeting{font-size:14px;color:var(--text-soft);margin-bottom:18px}
-.banner{
-  font-size:12px;color:var(--text-soft);background:rgba(187,148,87,0.12);
-  border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:18px;
-}
-.q-label{display:block;font-size:22px;font-weight:600;margin-bottom:10px;color:var(--text);line-height:1.35}
-.q-label .optional{font-size:12px;font-weight:500;color:var(--text-mute);margin-left:6px}
-.q-help{font-size:14px;color:var(--text-soft);margin-bottom:24px;line-height:1.55;white-space:pre-line}
-.qblock.follow{margin-top:26px;padding-top:22px;border-top:1px dashed var(--border)}
-.qblock.follow .q-label{font-size:18px}
-.qblock.follow .q-help{margin-bottom:16px}
-.opts{display:flex;flex-direction:column;gap:8px}
-.opt{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:8px;
-  padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;
-  transition:border-color 0.15s, background 0.15s;
-}
-.opt:hover{border-color:var(--tan);background:var(--bg-card-2)}
-.opt.selected{border-color:var(--tan);background:rgba(187,148,87,0.10)}
-.opt .mark{
-  width:16px;height:16px;border-radius:50%;border:1px solid var(--border);
-  flex-shrink:0;margin-top:2px;transition:all 0.15s;
-}
-.opt.multi .mark{border-radius:4px}
-.opt.selected .mark{
-  border-color:var(--tan);background:var(--tan);
-  box-shadow:inset 0 0 0 3px var(--bg-card);
-}
-.opt .text{font-size:14px;color:var(--text);line-height:1.4;flex:1}
-.opt .text .sub{display:block;font-size:12px;color:var(--text-mute);margin-top:3px}
-.hint{font-size:12px;color:var(--text-mute);margin-top:10px}
+  /* Same look as the original Round 1 and Round 2 forms.
+     432818 espresso, FAF1DC cream, BB9457 tan, 6F1D1B burgundy, 99582A sienna */
+  :root {
+    --bg-deep: #1F1108;
+    --bg-card: #2E1B11;
+    --bg-raised: #432818;
+    --bg-hover: #5A3621;
+    --espresso: #432818;
+    --burgundy: #6F1D1B;
+    --burgundy_hover: #8A2522;
+    --sienna: #99582A;
+    --tan: #BB9457;
+    --tan_hover: #CFAB72;
+    --cream: #FAF1DC;
+    --cream_bright: #FFF7E6;
+    --cream_warm: #FFE6A7;
+    --muted: #BB9457;
+    --border: rgba(187, 148, 87, 0.22);
+  }
 
-.text-input,
-.text-area,
-.other-input{
-  width:100%;background:var(--bg-card);border:1px solid var(--border);
-  border-radius:8px;padding:12px 14px;color:var(--text);
-  font-family:inherit;font-size:14px;
-}
-.other-input{margin-top:8px}
-.text-area{min-height:120px;resize:vertical;line-height:1.55}
-.text-input:focus,.text-area:focus,.other-input:focus{outline:none;border-color:var(--tan)}
-.text-input::placeholder,.text-area::placeholder,.other-input::placeholder{color:var(--text-mute)}
-.other-input.hidden{display:none}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.navrow{
-  display:flex;justify-content:space-between;align-items:center;
-  padding-top:24px;margin-top:24px;border-top:1px solid var(--border);
-}
-.back{
-  background:none;border:none;color:var(--text-mute);
-  font-family:inherit;font-size:14px;cursor:pointer;padding:6px 0;
-}
-.back:hover{color:var(--text)}
-.back:disabled{opacity:0.4;cursor:not-allowed}
-.next{
-  background:var(--burgundy);color:var(--text);border:none;border-radius:6px;
-  padding:10px 24px;font-family:inherit;font-size:14px;font-weight:500;
-  cursor:pointer;transition:background 0.15s;
-}
-.next:hover{background:var(--burgundy-2)}
-.next:disabled{background:var(--bg-card);color:var(--text-mute);cursor:not-allowed}
+  body {
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(111, 29, 27, 0.35) 0%, transparent 55%),
+      var(--bg-deep);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
 
-.center{flex:1;display:flex;flex-direction:column;justify-content:center}
-.center h1{font-size:26px;font-weight:600;margin-bottom:10px}
-.center p{color:var(--text-soft);margin-bottom:20px}
+  .container {
+    width: 100%;
+    max-width: 720px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 44px 38px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(187, 148, 87, 0.05) inset;
+  }
+  body.r2 .container { max-width: 760px; }
 
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;color:var(--text-soft);margin-bottom:6px}
-.field input{
-  width:100%;background:var(--bg-card);border:1px solid var(--border);
-  border-radius:6px;padding:10px 12px;color:var(--text);
-  font-family:inherit;font-size:14px;
-}
-.field input:focus{outline:none;border-color:var(--tan)}
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--tan);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    font-weight: 700;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--tan);
+    box-shadow: 0 0 12px rgba(187, 148, 87, 0.6);
+  }
 
-@media (max-width:560px){
-  .q-label{font-size:20px}
-  .qblock.follow .q-label{font-size:17px}
-  .center h1{font-size:22px}
-}
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  .progress {
+    flex: 1;
+    height: 6px;
+    background: rgba(187, 148, 87, 0.18);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--burgundy), var(--tan));
+    transition: width 0.5s cubic-bezier(.2,.8,.2,1);
+    border-radius: 10px;
+  }
+  .progress-text {
+    font-size: 12px;
+    color: var(--tan);
+    font-weight: 700;
+    min-width: 46px;
+    text-align: right;
+  }
+
+  .step { display: block; animation: fade 0.35s ease; }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .banner {
+    font-size: 12px; color: var(--cream); background: rgba(187, 148, 87, 0.12);
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; margin-bottom: 18px;
+  }
+
+  .section-tag {
+    display: inline-block;
+    background: rgba(111, 29, 27, 0.35);
+    color: var(--tan);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 30px;
+    margin-bottom: 14px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+  }
+  .q-label {
+    font-size: 11px;
+    color: var(--tan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+  .q-title {
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 800;
+    margin-bottom: 22px;
+    color: var(--cream_bright);
+  }
+  body.r2 .q-title { font-size: 24px; line-height: 1.3; margin-bottom: 10px; }
+  .q-help {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin-bottom: 20px;
+    white-space: pre-line;
+  }
+  body.r1 .q-help { margin-top: -12px; }
+  body.r2 .q-title + .options,
+  body.r2 .q-title + .multi-hint,
+  body.r2 .q-title + .text-input { margin-top: 12px; }
+
+  .followup { margin-top: 22px; }
+  .followup .q-title { font-size: 19px; margin-top: 0; margin-bottom: 6px; }
+  .followup .fu-help { color: rgba(250, 241, 220, 0.65); font-size: 14px; margin-bottom: 14px; white-space: pre-line; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 18px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    color: var(--cream);
+    user-select: none;
+    font-weight: 500;
+  }
+  .option:hover {
+    border-color: var(--tan);
+    background: var(--bg-hover);
+    transform: translateX(3px);
+  }
+  .option.selected {
+    background: var(--burgundy);
+    border-color: var(--burgundy_hover);
+    color: var(--cream_bright);
+    box-shadow: 0 6px 22px rgba(111, 29, 27, 0.45);
+  }
+  .option .bullet {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--sienna);
+    flex-shrink: 0;
+    position: relative;
+    background: transparent;
+  }
+  .option.selected .bullet {
+    border-color: var(--cream_bright);
+    background: var(--cream_bright);
+  }
+  .option.selected .bullet::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    background: var(--burgundy);
+    border-radius: 50%;
+  }
+  .option .sub { display: block; font-size: 13px; opacity: 0.7; margin-top: 3px; font-weight: 400; }
+  .multi-hint {
+    display: inline-block;
+    background: rgba(187, 148, 87, 0.16);
+    color: var(--tan);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .other-input {
+    margin-top: 8px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--sienna);
+    background: var(--bg-raised);
+    color: var(--cream);
+    width: 100%;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    display: none;
+  }
+  .other-input.visible { display: block; }
+  .other-input:focus { border-color: var(--tan); }
+  .other-input::placeholder { color: rgba(250, 241, 220, 0.45); }
+
+  .text-input, textarea.text-input {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--sienna);
+    color: var(--cream);
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.18s ease;
+    font-family: inherit;
+    resize: vertical;
+  }
+  body.r2 .text-input { line-height: 1.5; }
+  body.r2 textarea.text-input { min-height: 130px; }
+  .text-input::placeholder { color: rgba(250, 241, 220, 0.4); }
+  .text-input:focus { border-color: var(--tan); }
+  .input-group { margin-bottom: 14px; }
+  .input-group label {
+    display: block;
+    font-size: 11px;
+    color: var(--tan);
+    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .btn {
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: inherit;
+  }
+  .btn-primary {
+    flex: 1;
+    background: var(--tan);
+    color: var(--espresso);
+    box-shadow: 0 8px 22px rgba(187, 148, 87, 0.28);
+  }
+  .btn-primary:hover { background: var(--tan_hover); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(207, 171, 114, 0.4); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--tan);
+    border: 1px solid var(--sienna);
+    padding: 14px 22px;
+  }
+  .btn-secondary:hover { color: var(--cream_bright); border-color: var(--tan); }
+
+  /* Round 2 intro */
+  .intro h1 {
+    font-size: 32px;
+    color: var(--cream_bright);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .intro p {
+    color: var(--cream);
+    line-height: 1.65;
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+
+  /* Review screen */
+  .final h1 {
+    font-size: 30px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--cream_bright);
+  }
+  body.r2 .final h1 { font-size: 28px; }
+  .final p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+  .dashboard {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin: 22px 0;
+  }
+  .dashboard h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--tan);
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+  .dashboard ul { list-style: none; }
+  .dashboard ul li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(187, 148, 87, 0.14);
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .dashboard ul li:last-child { border-bottom: none; }
+  .dashboard ul li .k { color: var(--tan); flex-shrink: 0; font-weight: 600; max-width: 55%; }
+  .dashboard ul li .v { text-align: right; font-weight: 600; color: var(--cream); }
+  body.r2 .dashboard ul li { padding: 14px 0; font-size: 13.5px; flex-direction: column; gap: 6px; }
+  body.r2 .dashboard ul li .k { font-weight: 700; max-width: none; }
+  body.r2 .dashboard ul li .v { text-align: left; font-weight: 400; white-space: pre-wrap; }
+
+  .thanks {
+    text-align: center;
+    padding: 28px 8px;
+  }
+  .thanks h1 { font-size: 30px; color: var(--cream_bright); margin-bottom: 14px; }
+  .thanks p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  @media (max-width: 640px) {
+    body { padding: 16px; }
+    .container { padding: 30px 22px; border-radius: 18px; }
+    .q-title { font-size: 22px; }
+    body.r2 .q-title { font-size: 20px; }
+    .intro h1 { font-size: 26px; }
+    .final h1, .thanks h1 { font-size: 24px; }
+    body.r2 .final h1, body.r2 .thanks h1 { font-size: 22px; }
+    .nav { flex-direction: column-reverse; }
+    .btn-secondary, .btn-primary { width: 100%; flex: 1; min-height: 50px; }
+    .dashboard ul li { flex-direction: column; gap: 4px; }
+    .dashboard ul li .k { max-width: none; }
+    .dashboard ul li .v { text-align: left; }
+  }
+  @media (max-width: 380px) {
+    body { padding: 12px; }
+    .container { padding: 24px 18px; border-radius: 16px; }
+    .q-title { font-size: 20px; line-height: 1.3; }
+    body.r2 .q-title { font-size: 19px; }
+    .option { padding: 14px 14px; font-size: 14px; gap: 10px; }
+    .brand { font-size: 11px; letter-spacing: 1.5px; }
+    .text-input { padding: 12px 14px; font-size: 14px; }
+  }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body class="r1">
+<div class="container">
 
-  <div class="topbar">
-    <div class="wordmark">Socially Soch</div>
-    <div class="progress-text" id="progressText"></div>
-  </div>
-  <div class="progress-bar" id="progressBar" style="display:none">
-    <div class="fill" id="progressFill" style="width:0%"></div>
+  <div class="brand">
+    <span class="dot"></span>
+    <span id="brandText">Socially Soch</span>
   </div>
 
-  <div class="stage" id="stage">
-    <div class="center"><p>Loading…</p></div>
+  <div class="progress-wrap">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0%</div>
   </div>
 
-  <div class="navrow" id="navrow" style="display:none">
-    <button class="back" id="backBtn" type="button">Back</button>
-    <button class="next" id="nextBtn" type="button">Continue</button>
+  <div id="stage">
+    <div class="step"><div class="q-title">Loading…</div></div>
   </div>
 
 </div>
@@ -155,6 +405,7 @@ body{
    Socially Soch shared form page.
    Every form built in the portal opens here:
      form.html?id=<form-id>
+   V1 forms use the Round 1 look, every other form uses the Round 2 look.
    The questions live in the "Forms" tab of the Google Sheet.
    ========================================================= */
 const CONFIG = {
@@ -168,19 +419,26 @@ const params = new URLSearchParams(location.search);
 const FORM_ID = (params.get("id") || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
 const IS_PREVIEW = params.get("preview") === "draft";
 
+// Short names used on the Round 1 review screen, same as the original form
+const R1_SHORT = {
+  profileType: "Profile type", niche: "Niche", offer: "Offer", stage: "Audience size",
+  goal30: "30 day goal", problem: "Biggest problem", frequency: "Posting frequency",
+  format: "Format focus", onCamera: "On camera", targetFollower: "Target follower",
+  competitor: "Biggest competitor", differentiation: "Differentiation",
+  adsRun: "Ads run before?", adsTypes: "Ad types tried"
+};
+
 const stageEl = document.getElementById("stage");
-const navrowEl = document.getElementById("navrow");
-const backBtn = document.getElementById("backBtn");
-const nextBtn = document.getElementById("nextBtn");
 const progressText = document.getElementById("progressText");
 const progressFill = document.getElementById("progressFill");
-const progressBar = document.getElementById("progressBar");
 
 let FORM = null;
+let STYLE = "r1";    // "r1" Round 1 look, "r2" Round 2 look
 let PAGES = [];      // each page is a list of questions shown together
 let QMAP = {};       // key -> question
+let REVIEW_Q = null; // Round 1 look: the closing optional note sits on the review screen
 const state = {
-  cur: null,         // page index, "contact" or "done"
+  cur: "intro",      // "intro", page index, "final" or "thanks"
   answers: {},
   others: {},
   user: { name: "", phone: "", email: "", handle: "" }
@@ -191,17 +449,17 @@ function esc(s) {
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
-function fillName(t) {
-  const name = (FORM && FORM.clientName) || state.user.name || "there";
-  return String(t || "").replace(/\{name\}/g, name);
+function firstName() {
+  const n = (FORM && FORM.clientName) || state.user.name || "";
+  return n.trim().split(/\s+/)[0] || "there";
 }
+function fillName(t) { return String(t || "").replace(/\{name\}/g, firstName()); }
 function scrollTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
 
 function fail(msg) {
-  navrowEl.style.display = "none";
-  progressBar.style.display = "none";
+  progressFill.style.width = "0%";
   progressText.textContent = "";
-  stageEl.innerHTML = '<div class="center"><h1>' + esc(msg) + '</h1></div>';
+  stageEl.innerHTML = '<div class="step"><div class="thanks"><h1>' + esc(msg) + '</h1></div></div>';
 }
 
 /* ---------------- load ---------------- */
@@ -231,19 +489,31 @@ function start() {
     return fail("This form has no questions yet.");
   }
   FORM.contact = Object.assign(
-    { name: true, phone: true, email: true, emailRequired: true, instagram: false, position: "end" },
+    { name: true, phone: true, email: true, emailRequired: true, instagram: false },
     FORM.contact || {}
   );
-  state.user.name = FORM.clientName || "";
-  document.title = (FORM.clientName ? FORM.clientName + " · " : "") + "Socially Soch";
+  const tag = String(FORM.tag || "").toUpperCase();
+  STYLE = tag === "V1" ? "r1" : "r2";
+  document.body.className = STYLE;
+  document.getElementById("brandText").textContent =
+    STYLE === "r1" ? "Brand Onboarding Questionnaire" : (tag === "V2" ? "Round 2" : (tag === "BRIEF" ? "Brief" : "Socially Soch"));
+  document.title = STYLE === "r1"
+    ? (FORM.clientName ? FORM.clientName + " · Tell us about your brand" : "Tell us about your brand")
+    : (tag === "V2" ? "Round 2" : "Socially Soch") + (FORM.clientName ? " for " + firstName() : "");
+
+  if (STYLE === "r2") state.user.name = FORM.clientName || "";
 
   QMAP = {};
   FORM.questions.forEach(q => { QMAP[q.key] = q; });
+
+  REVIEW_Q = null;
+  const last = FORM.questions[FORM.questions.length - 1];
+  if (STYLE === "r1" && FORM.questions.length > 1 && last.type === "textarea" && last.required === false && !(last.showIf && last.showIf.key)) {
+    REVIEW_Q = last;
+  }
   buildPages();
 
-  const first = nextVisible(-1);
-  if (contactFirst()) state.cur = "contact";
-  else state.cur = first === -1 ? (hasContact() ? "contact" : "done") : first;
+  state.cur = hasContact() ? "intro" : (nextVisible(-1) === -1 ? "final" : nextVisible(-1));
   render();
 }
 
@@ -252,6 +522,7 @@ function buildPages() {
   PAGES = [];
   const pageOf = {};
   FORM.questions.forEach(q => {
+    if (q === REVIEW_Q) return;
     const s = q.showIf;
     if (s && s.key && s.inline && pageOf[s.key] !== undefined) {
       PAGES[pageOf[s.key]].push(q);
@@ -301,9 +572,6 @@ function hasContact() {
   const c = FORM.contact;
   return !!(c.name || c.phone || c.email || c.instagram);
 }
-function contactFirst() {
-  return hasContact() && FORM.contact.position === "start";
-}
 
 /* ---------------- answers ---------------- */
 function isAnswered(q) {
@@ -326,83 +594,186 @@ function clearAnswer(key) {
   delete state.answers[key];
   delete state.others[key];
 }
+function answerText(q) {
+  const a = state.answers[q.key];
+  const otherText = (state.others[q.key] || "").trim() || "Other";
+  if (Array.isArray(a)) return a.map(x => x === OTHER ? otherText : x).join(", ");
+  if (typeof a === "string") return a === OTHER ? otherText : a.trim();
+  return "";
+}
+
+/* ---------------- progress ---------------- */
+// Same maths as the original forms: intro, each question, review, thank you
+function updateProgress() {
+  const steps = [];
+  if (hasContact()) steps.push("intro");
+  visibleList().forEach(i => steps.push(i));
+  steps.push("final", "thanks");
+  let idx = steps.indexOf(state.cur);
+  if (idx < 0) idx = 0;
+  const pct = Math.round((idx / (steps.length - 1)) * 100);
+  progressFill.style.width = pct + "%";
+  progressText.textContent = pct + "%";
+}
 
 /* ---------------- render ---------------- */
 function render() {
-  if (typeof state.cur === "number") return renderPage(state.cur);
-  if (state.cur === "contact") return renderContact();
-  return renderClosing();
+  let html;
+  if (state.cur === "intro") html = introHtml();
+  else if (typeof state.cur === "number") html = pageHtml(state.cur);
+  else if (state.cur === "final") html = finalHtml();
+  else html = thanksHtml();
+  stageEl.innerHTML = '<div class="step">' + (IS_PREVIEW && state.cur !== "thanks" ? '<div class="banner">Preview. Answers are not saved.</div>' : '') + html + '</div>';
+  updateProgress();
+  if (typeof state.cur === "number") updateNav();
 }
 
-function updateProgress() {
-  const vis = visibleList();
-  if (typeof state.cur === "number") {
-    const pos = Math.max(vis.indexOf(state.cur), 0);
-    progressBar.style.display = "block";
-    progressFill.style.width = (vis.length ? (pos / vis.length) * 100 : 0) + "%";
-    progressText.textContent = (pos + 1) + " of " + vis.length;
-  } else if (state.cur === "contact") {
-    progressBar.style.display = "block";
-    progressFill.style.width = contactFirst() ? "0%" : "100%";
-    progressText.textContent = contactFirst() ? "Start here" : "Last bit";
-  } else {
-    progressBar.style.display = "none";
-    progressText.textContent = "";
-  }
+function group(id, label, type, ph, val) {
+  return '<div class="input-group"><label for="' + id + '">' + esc(label) + '</label>' +
+         '<input class="text-input" id="' + id + '" type="' + type + '" placeholder="' + esc(ph) + '" value="' + esc(val || "") + '"/></div>';
 }
 
-function questionHtml(q) {
-  let h = '<label class="q-label">' + esc(q.label) +
-    (q.required === false ? '<span class="optional">Optional</span>' : '') + '</label>';
-  if (q.help) h += '<div class="q-help">' + esc(q.help) + '</div>';
-  const k = esc(q.key);
-
-  if (q.type === "text") {
-    h += '<input class="text-input" type="text" data-key="' + k + '" placeholder="' + esc(q.placeholder || "") +
-         '" value="' + esc(state.answers[q.key] || "") + '">';
-  } else if (q.type === "textarea") {
-    h += '<textarea class="text-area" data-key="' + k + '" placeholder="' + esc(q.placeholder || "") + '">' +
-         esc(state.answers[q.key] || "") + '</textarea>';
-  } else {
-    const multi = q.type === "multi";
-    const sel = state.answers[q.key] || (multi ? [] : "");
-    h += '<div class="opts" data-key="' + k + '">';
-    (q.options || []).forEach(o => {
-      const on = multi ? sel.indexOf(o.l) !== -1 : sel === o.l;
-      h += '<div class="opt' + (on ? ' selected' : '') + (multi ? ' multi' : '') + '" data-v="' + esc(o.l) + '">' +
-             '<div class="mark"></div>' +
-             '<div class="text">' + esc(o.l) + (o.sub ? '<span class="sub">' + esc(o.sub) + '</span>' : '') + '</div>' +
-           '</div>';
-    });
-    if (q.allowOther) {
-      const on = multi ? sel.indexOf(OTHER) !== -1 : sel === OTHER;
-      h += '<div class="opt' + (on ? ' selected' : '') + (multi ? ' multi' : '') + '" data-v="' + OTHER + '">' +
-             '<div class="mark"></div><div class="text">Something else</div></div>';
-      h += '<input class="other-input' + (on ? '' : ' hidden') + '" type="text" data-key="' + k +
-           '" placeholder="Type your answer here" value="' + esc(state.others[q.key] || "") + '">';
-    }
-    h += '</div>';
-    if (multi) h += '<div class="hint">Pick as many as you like.</div>';
-  }
+function contactFields() {
+  const c = FORM.contact;
+  const r2 = STYLE === "r2";
+  let h = "";
+  if (c.name)      h += group("fName", r2 ? "Name" : "Your name", "text", r2 && FORM.clientName ? FORM.clientName : "Your full name", state.user.name);
+  if (c.instagram) h += group("fHandle", r2 ? "Instagram handle" : "Your Instagram handle", "text", "@yourhandle", state.user.handle);
+  if (c.email)     h += group("fEmail", "Email", "email", "you@email.com", state.user.email);
+  if (c.phone)     h += group("fPhone", "Phone", "tel", "+91", state.user.phone);
   return h;
 }
 
-function renderPage(i) {
-  navrowEl.style.display = "flex";
-  let html = "";
-  if (IS_PREVIEW) html += '<div class="banner">Preview. Answers are not saved.</div>';
-  const greeting = FORM.greeting == null ? "Hey {name}." : FORM.greeting;
-  if (i === nextVisible(-1) && !contactFirst() && greeting) {
-    html += '<div class="greeting">' + esc(fillName(greeting)) + '</div>';
+function introHtml() {
+  const c = FORM.contact;
+  const nav = '<div class="nav"><button class="btn btn-primary" data-act="begin">Begin</button></div>';
+  if (STYLE === "r1") {
+    return '<div class="q-label">Start here</div>' +
+      '<div class="q-title">' + esc(fillName(c.title || "Tell us about your brand.")) + '</div>' +
+      (c.help ? '<div class="q-help">' + esc(fillName(c.help)) + '</div>' : '') +
+      contactFields() + nav;
   }
-  PAGES[i].forEach((q, idx) => {
-    const vis = isVisible(q);
-    html += '<div class="qblock' + (idx > 0 ? ' follow' : '') + '" data-block="' + esc(q.key) + '"' +
-            (vis ? '' : ' style="display:none"') + '>' + questionHtml(q) + '</div>';
+  const tag = String(FORM.tag || "").toUpperCase();
+  const greet = FORM.greeting ? fillName(FORM.greeting) : (FORM.clientName ? "Hi " + firstName() + "." : "Hi there.");
+  const line = c.help ? fillName(c.help)
+    : (tag === "V2" ? "Round 2. Built for you. Honest answers only." : "Built for you. Honest answers only.");
+  return '<div class="intro"><h1>' + esc(greet) + '</h1><p>' + esc(line) + '</p>' +
+    '<div style="margin-top:20px">' + contactFields() + '</div>' + nav + '</div>';
+}
+
+function questionNumber(i) {
+  return visibleList().indexOf(i) + 1;
+}
+
+function optionsHtml(q) {
+  const multi = q.type === "multi";
+  const sel = state.answers[q.key] || (multi ? [] : "");
+  const k = esc(q.key);
+  let h = '';
+  if (multi && STYLE === "r2") h += '<div class="multi-hint">Multi select</div>';
+  h += '<div class="options" data-key="' + k + '">';
+  (q.options || []).forEach(o => {
+    const on = multi ? sel.indexOf(o.l) !== -1 : sel === o.l;
+    h += '<div class="option' + (on ? ' selected' : '') + '" data-v="' + esc(o.l) + '">' +
+           '<div class="bullet"></div>' +
+           '<div>' + esc(o.l) + (o.sub ? '<span class="sub">' + esc(o.sub) + '</span>' : '') + '</div>' +
+         '</div>';
   });
-  stageEl.innerHTML = html;
-  updateProgress();
-  updateNav();
+  if (q.allowOther) {
+    const on = multi ? sel.indexOf(OTHER) !== -1 : sel === OTHER;
+    h += '<div class="option' + (on ? ' selected' : '') + '" data-v="' + OTHER + '"><div class="bullet"></div><div>Other</div></div>';
+    h += '<input class="other-input' + (on ? ' visible' : '') + '" type="text" data-key="' + k +
+         '" placeholder="Type your answer here" value="' + esc(state.others[q.key] || "") + '"/>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function inputHtml(q) {
+  const k = esc(q.key);
+  if (q.type === "text") {
+    return '<input class="text-input" type="text" data-key="' + k + '" placeholder="' +
+      esc(q.placeholder || "Type your answer here") + '" value="' + esc(state.answers[q.key] || "") + '"/>';
+  }
+  return '<textarea class="text-input" rows="5" data-key="' + k + '" placeholder="' +
+    esc(q.placeholder || "Take your time. There is no character limit.") + '">' + esc(state.answers[q.key] || "") + '</textarea>';
+}
+
+// Round 1 competitor question: two fields, same as the original form
+function isCompetitorPair(q) { return STYLE === "r1" && q.key === "competitor" && q.type === "text"; }
+function competitorHtml(q) {
+  const c = state.comp || { name: "", handle: "" };
+  return '<div class="input-group"><label>Competitor name or brand</label>' +
+    '<input class="text-input" id="compName" type="text" placeholder="Their name or brand name" value="' + esc(c.name) + '"/></div>' +
+    '<div class="input-group"><label>Their Instagram handle, if you have it</label>' +
+    '<input class="text-input" id="compHandle" type="text" placeholder="@theirhandle" value="' + esc(c.handle) + '"/></div>';
+}
+
+function bodyHtml(q) {
+  if (isCompetitorPair(q)) return competitorHtml(q);
+  return (q.type === "single" || q.type === "multi") ? optionsHtml(q) : inputHtml(q);
+}
+
+function pageHtml(i) {
+  const main = PAGES[i][0];
+  let h = '';
+  if (STYLE === "r2" && main.section) {
+    const vis = visibleList();
+    const pos = vis.indexOf(i);
+    const prev = pos > 0 ? PAGES[vis[pos - 1]][0].section : null;
+    if (main.section !== prev) h += '<span class="section-tag">' + esc(main.section) + '</span>';
+  }
+  h += '<div class="q-label">Question ' + questionNumber(i) + '</div>';
+  h += '<div class="q-title">' + esc(main.label) + '</div>';
+  if (main.help && !isCompetitorPair(main)) h += '<div class="q-help">' + esc(main.help) + '</div>';
+  h += bodyHtml(main);
+  PAGES[i].slice(1).forEach(q => {
+    h += '<div class="followup" data-block="' + esc(q.key) + '"' + (isVisible(q) ? '' : ' style="display:none"') + '>' +
+      '<div class="q-title">' + esc(q.label) + '</div>' +
+      (q.help ? '<div class="fu-help">' + esc(q.help) + '</div>' : '') +
+      bodyHtml(q) + '</div>';
+  });
+  h += '<div class="nav">' +
+    (hasContact() || prevVisible(i) !== -1 ? '<button class="btn btn-secondary" data-act="back">Back</button>' : '') +
+    '<button class="btn btn-primary" id="nextBtn" data-act="next" disabled>Continue</button></div>';
+  return h;
+}
+
+function finalHtml() {
+  const r1 = STYLE === "r1";
+  const rows = [];
+  const c = FORM.contact;
+  if (c.name)      rows.push(['Name', state.user.name]);
+  if (c.instagram) rows.push([r1 ? 'Handle' : 'Instagram', state.user.handle]);
+  if (c.email)     rows.push(['Email', state.user.email]);
+  if (c.phone)     rows.push(['Phone', state.user.phone]);
+  FORM.questions.forEach(q => {
+    if (q === REVIEW_Q || !isVisible(q)) return;
+    rows.push([r1 ? (R1_SHORT[q.key] || q.label) : q.label, answerText(q) || (r1 ? "" : "—")]);
+  });
+  let h = '<div class="final">' +
+    '<h1>' + (r1 ? "Here is what we recorded." : "Here's what you told us.") + '</h1>' +
+    '<p>' + (r1 ? "Review your answers below. If anything is wrong, tap Back and fix it." : "Read it once. Fix anything that's off. Then submit.") + '</p>' +
+    '<div class="dashboard"><h3>Your answers</h3><ul>' +
+    rows.map(r => '<li><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></li>').join("") +
+    '</ul></div>';
+  if (REVIEW_Q) {
+    h += '<div class="input-group"><label>' + esc(REVIEW_Q.label) + '</label>' +
+      '<textarea class="text-input" rows="5" data-key="' + esc(REVIEW_Q.key) + '" placeholder="' + esc(REVIEW_Q.placeholder || "") + '">' +
+      esc(state.answers[REVIEW_Q.key] || "") + '</textarea></div>';
+  }
+  h += '<div class="nav"><button class="btn btn-secondary" data-act="back">Back</button>' +
+    '<button class="btn btn-primary" data-act="submit">Submit</button></div></div>';
+  return h;
+}
+
+function thanksHtml() {
+  const title = FORM.closingTitle == null ? "Thanks {name}." : FORM.closingTitle;
+  const text = FORM.closingText == null ? "We will get back to you within 48 hours." : FORM.closingText;
+  return '<div class="thanks"><h1>' + esc(fillName(title)) + '</h1>' +
+    (text ? '<p>' + esc(fillName(text)) + '</p>' : '') +
+    (IS_PREVIEW ? '<p style="font-size:12px;margin-top:10px">Preview only. Nothing was sent to the sheet.</p>' : '') +
+    '</div>';
 }
 
 function refreshBlocks() {
@@ -414,101 +785,87 @@ function refreshBlocks() {
     const vis = isVisible(q);
     if (!vis && (state.answers[q.key] !== undefined || state.others[q.key] !== undefined)) {
       clearAnswer(q.key);
-      blk.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+      blk.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
       blk.querySelectorAll("input, textarea").forEach(inp => { inp.value = ""; });
       const oi = blk.querySelector(".other-input");
-      if (oi) oi.classList.add("hidden");
+      if (oi) oi.classList.remove("visible");
     }
     blk.style.display = vis ? "" : "none";
   });
 }
 
+function updateNav() {
+  const btn = document.getElementById("nextBtn");
+  if (btn && typeof state.cur === "number") btn.disabled = !pageOk(state.cur);
+}
+
 function toggleOther(optsEl, show, key) {
   const oi = optsEl.querySelector(".other-input");
   if (!oi) return;
-  if (show) { oi.classList.remove("hidden"); oi.focus(); }
-  else { oi.classList.add("hidden"); oi.value = ""; delete state.others[key]; }
+  if (show) { oi.classList.add("visible"); oi.focus(); }
+  else { oi.classList.remove("visible"); oi.value = ""; delete state.others[key]; }
 }
 
-function afterChange() {
-  refreshBlocks();
-  updateProgress();
-  updateNav();
-}
+/* ---------------- navigation ---------------- */
+function go(to) { state.cur = to; render(); scrollTop(); }
 
-function updateNav() {
-  if (typeof state.cur !== "number") return;
-  const i = state.cur;
-  nextBtn.disabled = !pageOk(i);
-  const isLast = nextVisible(i) === -1;
-  nextBtn.textContent = isLast && (!hasContact() || contactFirst()) ? "Send" : "Continue";
-  backBtn.disabled = prevVisible(i) === -1 && !contactFirst();
-}
-
-function field(id, label, type, ph, val) {
-  return '<div class="field"><label for="' + id + '">' + esc(label) + '</label>' +
-         '<input id="' + id + '" type="' + type + '" placeholder="' + esc(ph) + '" value="' + esc(val || "") + '"></div>';
-}
-
-function renderContact() {
-  navrowEl.style.display = "flex";
-  updateProgress();
-  const c = FORM.contact;
-  const first = contactFirst();
-  let h = '';
-  if (IS_PREVIEW) h += '<div class="banner">Preview. Answers are not saved.</div>';
-  const greeting = FORM.greeting == null ? "Hey {name}." : FORM.greeting;
-  if (first && greeting && FORM.clientName) h += '<div class="greeting">' + esc(fillName(greeting)) + '</div>';
-  const title = c.title || (first ? "First, a few details." : "Confirm your details");
-  const help = c.help != null && c.help !== "" ? c.help : (first ? "" : "So we send the next move to the right place.");
-  h += '<label class="q-label">' + esc(title) + '</label>';
-  if (help) h += '<div class="q-help">' + esc(help) + '</div>';
-  if (c.name)      h += field("fName", "Your name", "text", "Your full name", state.user.name);
-  if (c.instagram) h += field("fHandle", "Your Instagram handle", "text", "@yourhandle", state.user.handle);
-  if (c.email)     h += field("fEmail", "Email", "email", "you@email.com", state.user.email);
-  if (c.phone)     h += field("fPhone", "Phone", "tel", "+91", state.user.phone);
-  stageEl.innerHTML = h;
-  ["fName", "fHandle", "fPhone", "fEmail"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener("input", syncContact);
-  });
-  nextBtn.textContent = first ? "Begin" : "Send";
-  backBtn.disabled = first || visibleList().length === 0;
-  syncContact();
-}
-
-function syncContact() {
-  const c = FORM.contact;
+function readContact() {
   const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : null; };
   const n = val("fName"), p = val("fPhone"), m = val("fEmail"), ih = val("fHandle");
   if (n !== null) state.user.name = n;
   if (p !== null) state.user.phone = p;
   if (m !== null) state.user.email = m;
   if (ih !== null) state.user.handle = ih;
-  let ok = true;
-  if (c.email && c.emailRequired !== false) ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.user.email || "");
-  if (c.name && !FORM.clientName) ok = ok && !!state.user.name;
-  nextBtn.disabled = !ok;
 }
 
-function renderClosing() {
-  navrowEl.style.display = "none";
-  updateProgress();
-  const title = FORM.closingTitle == null ? "Thanks {name}." : FORM.closingTitle;
-  const text = FORM.closingText == null ? "We will get back to you within 48 hours." : FORM.closingText;
-  stageEl.innerHTML =
-    '<div class="center">' +
-      '<h1>' + esc(fillName(title)) + '</h1>' +
-      (text ? '<p>' + esc(fillName(text)) + '</p>' : '') +
-      (IS_PREVIEW ? '<p style="font-size:12px;color:var(--text-mute)">Preview only. Nothing was sent to the sheet.</p>' : '') +
-    '</div>';
+function begin() {
+  readContact();
+  const c = FORM.contact;
+  const needName = c.name && !state.user.name;
+  const needEmail = c.email && c.emailRequired !== false && !state.user.email;
+  if (needName || needEmail) {
+    alert(c.name && c.email ? "Please add at least your name and email to continue."
+      : (needName ? "Please add your name to continue." : "Please add your email to continue."));
+    return;
+  }
+  const f = nextVisible(-1);
+  go(f === -1 ? "final" : f);
+}
+
+function forward() {
+  const n = nextVisible(state.cur);
+  go(n === -1 ? "final" : n);
+}
+
+function back() {
+  if (state.cur === "final") {
+    const p = prevVisible(PAGES.length);
+    if (p !== -1) return go(p);
+    if (hasContact()) return go("intro");
+    return;
+  }
+  if (typeof state.cur === "number") {
+    const p = prevVisible(state.cur);
+    if (p !== -1) return go(p);
+    if (hasContact()) return go("intro");
+  }
 }
 
 /* ---------------- events ---------------- */
 stageEl.addEventListener("click", e => {
-  const opt = e.target.closest(".opt");
+  const act = e.target.closest("[data-act]");
+  if (act) {
+    if (act.disabled) return;
+    const a = act.dataset.act;
+    if (a === "begin") return begin();
+    if (a === "next") return forward();
+    if (a === "back") return back();
+    if (a === "submit") return submit(act);
+    return;
+  }
+  const opt = e.target.closest(".option");
   if (!opt) return;
-  const opts = opt.closest(".opts");
+  const opts = opt.closest(".options");
   const key = opts.dataset.key;
   const q = QMAP[key];
   if (!q) return;
@@ -522,65 +879,43 @@ stageEl.addEventListener("click", e => {
     if (v === OTHER) toggleOther(opts, cur.indexOf(OTHER) !== -1, key);
   } else {
     state.answers[key] = v;
-    opts.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+    opts.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
     opt.classList.add("selected");
     toggleOther(opts, v === OTHER, key);
   }
-  afterChange();
+  refreshBlocks();
+  updateProgress();
+  updateNav();
 });
 
 stageEl.addEventListener("input", e => {
   const el = e.target;
+  if (el.id === "fName" || el.id === "fHandle" || el.id === "fEmail" || el.id === "fPhone") return readContact();
+  if (el.id === "compName" || el.id === "compHandle") {
+    const n = (document.getElementById("compName") || {}).value || "";
+    const hd = (document.getElementById("compHandle") || {}).value || "";
+    state.comp = { name: n, handle: hd };
+    const a = n.trim(), b = hd.trim();
+    state.answers.competitor = a || b ? a + (b ? (a ? " (" + b + ")" : b) : "") : "";
+    return updateNav();
+  }
   const key = el.dataset ? el.dataset.key : null;
   if (!key) return;
   if (el.classList.contains("other-input")) state.others[key] = el.value;
-  else if (el.classList.contains("text-input") || el.classList.contains("text-area")) state.answers[key] = el.value;
-  else return;
-  afterChange();
-});
-
-nextBtn.addEventListener("click", () => {
-  if (nextBtn.disabled) return;
-  if (state.cur === "contact") {
-    if (contactFirst()) {
-      const f = nextVisible(-1);
-      if (f !== -1) { state.cur = f; render(); scrollTop(); return; }
-    }
-    return submit();
-  }
-  const n = nextVisible(state.cur);
-  if (n !== -1) { state.cur = n; render(); scrollTop(); return; }
-  if (hasContact() && !contactFirst()) { state.cur = "contact"; render(); scrollTop(); return; }
-  submit();
-});
-
-backBtn.addEventListener("click", () => {
-  if (backBtn.disabled) return;
-  if (state.cur === "contact") {
-    if (contactFirst()) return;
-    const p = prevVisible(PAGES.length);
-    if (p !== -1) { state.cur = p; render(); scrollTop(); }
-    return;
-  }
-  const p = prevVisible(state.cur);
-  if (p !== -1) { state.cur = p; render(); scrollTop(); }
-  else if (contactFirst()) { state.cur = "contact"; render(); scrollTop(); }
+  else state.answers[key] = el.value;
+  refreshBlocks();
+  updateNav();
 });
 
 /* ---------------- submit ---------------- */
-function submit() {
+function submit(btn) {
   const order = [], labels = {}, sections = {}, answers = {};
   FORM.questions.forEach(q => {
     if (!isVisible(q)) return;
-    const a = state.answers[q.key];
-    const otherText = (state.others[q.key] || "").trim() || "Something else";
-    let text = "";
-    if (Array.isArray(a)) text = a.map(x => x === OTHER ? otherText : x).join(", ");
-    else if (typeof a === "string") text = a === OTHER ? otherText : a.trim();
     order.push(q.key);
     labels[q.key] = q.label;
     sections[q.key] = q.section || "General";
-    answers[q.key] = text;
+    answers[q.key] = answerText(q);
   });
 
   const payload = {
@@ -596,22 +931,16 @@ function submit() {
     questionOrder: order
   };
 
-  if (IS_PREVIEW) {
-    console.log("Preview payload (not sent):", payload);
-    state.cur = "done"; render(); scrollTop();
-    return;
-  }
+  const done = () => go("thanks");
+  if (IS_PREVIEW) { console.log("Preview payload (not sent):", payload); return done(); }
 
-  nextBtn.disabled = true;
-  nextBtn.textContent = "Sending";
+  if (btn) { btn.disabled = true; btn.textContent = "Submitting..."; }
   fetch(CONFIG.appsScriptUrl, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload)
-  })
-  .then(() => { state.cur = "done"; render(); scrollTop(); })
-  .catch(() => { nextBtn.disabled = false; nextBtn.textContent = "Try again"; });
+  }).then(done).catch(done);
 }
 
 load();

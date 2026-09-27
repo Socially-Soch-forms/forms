@@ -242,6 +242,7 @@ function normalize(f) {
     id: f.id || "",
     clientName: f.clientName || "",
     tag: f.tag || "V2",
+    look: ["round1", "round2", "classic"].indexOf(f.look) !== -1 ? f.look : "",
     greeting: f.greeting == null ? "Hey {name}." : f.greeting,
     closingTitle: f.closingTitle == null ? "Thanks {name}." : f.closingTitle,
     closingText: f.closingText == null ? "We will get back to you within 48 hours." : f.closingText,
@@ -279,6 +280,7 @@ function cleanForm() {
     id: d.id,
     clientName: d.clientName.trim(),
     tag: (d.tag || "FORM").trim().toUpperCase() || "FORM",
+    look: d.look || "",
     greeting: d.greeting,
     closingTitle: d.closingTitle,
     closingText: d.closingText,
@@ -319,6 +321,7 @@ function templateRound1() {
     id: "round1",
     clientName: "",
     tag: "V1",
+    look: "round1",
     greeting: "",
     closingTitle: "Thank you.",
     closingText: "We will do our best to help you promote your brand and build a personalized system for you.",
@@ -450,6 +453,7 @@ function templateJewellery() {
     id: "",
     clientName: "",
     tag: r1.tag,
+    look: "round1",
     greeting: r1.greeting,
     closingTitle: r1.closingTitle,
     closingText: r1.closingText,
@@ -761,6 +765,12 @@ function showEditor() {
         '<label class="fld"><span>Tag in the sheet</span><input class="inp" data-set="tag" list="tagList" value="' + esc(d.tag) + '">' +
           '<datalist id="tagList"><option value="V2"><option value="BRIEF"><option value="V1"><option value="FORM"></datalist>' +
           '<em>The chip in the Form column. V2 shows tan, BRIEF sienna, anything else espresso.</em></label>' +
+        '<label class="fld"><span>Look</span><select class="inp" data-set="look">' +
+          '<option value=""' + (!d.look ? " selected" : "") + '>Automatic (V1 uses Round 1, others Round 2)</option>' +
+          '<option value="round1"' + (d.look === "round1" ? " selected" : "") + '>Round 1 (Brand Onboarding Questionnaire)</option>' +
+          '<option value="round2"' + (d.look === "round2" ? " selected" : "") + '>Round 2 (like Hina\'s form)</option>' +
+          '<option value="classic"' + (d.look === "classic" ? " selected" : "") + '>Classic (like Nitika, Dhaanya and Aaryan)</option>' +
+        '</select><em>How the form looks and reads for the client. The questions stay the same.</em></label>' +
         '<label class="fld"><span>Greeting on page 1 <i>optional</i></span><input class="inp" data-set="greeting" value="' + esc(d.greeting) + '">' +
           '<em>{name} becomes the client name. Clear it for no greeting.</em></label>' +
         '<label class="fld"><span>Thank you title</span><input class="inp" data-set="closingTitle" value="' + esc(d.closingTitle) + '"></label>' +

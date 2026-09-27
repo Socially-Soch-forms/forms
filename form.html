@@ -493,7 +493,12 @@ function start() {
     FORM.contact || {}
   );
   const tag = String(FORM.tag || "").toUpperCase();
-  STYLE = tag === "V1" ? "r1" : "r2";
+  if (FORM.look === "classic") {
+    // Classic look lives in its own page, same as the original Nitika, Dhaanya and Aaryan forms
+    location.replace("classic.html" + location.search);
+    return;
+  }
+  STYLE = FORM.look === "round1" ? "r1" : FORM.look === "round2" ? "r2" : (tag === "V1" ? "r1" : "r2");
   document.body.className = STYLE;
   document.getElementById("brandText").textContent =
     STYLE === "r1" ? "Brand Onboarding Questionnaire" : (tag === "V2" ? "Round 2" : (tag === "BRIEF" ? "Brief" : "Socially Soch"));
